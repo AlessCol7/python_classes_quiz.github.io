@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Python – Clase și Funcții</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0d;
+    --surface: #151515;
+    --card: #1c1c1c;
+    --border: #2a2a2a;
+    --accent: #f0c040;
+    --accent2: #4fc3f7;
+    --text: #e8e8e8;
+    --muted: #888;
+    --correct: #4caf50;
+    --wrong: #ef5350;
+    --radius: 6px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    color: var(--accent);
+    letter-spacing: -1px;
+    line-height: 1.1;
+  }
+  header p {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .tag-line {
+    display: inline-block;
+    margin-top: 16px;
+    background: #1c1c1c;
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    font-size: 0.75rem;
+    border-radius: 99px;
+    color: var(--accent2);
+  }
+
+  /* ─── PROGRESS ─── */
+  #progress-bar-wrap {
+    max-width: 700px;
+    margin: 0 auto 36px;
+  }
+  #progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  #progress-track {
+    height: 4px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  #progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width 0.4s ease;
+    border-radius: 99px;
+  }
+
+  /* ─── QUIZ CONTAINER ─── */
+  #quiz {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  /* ─── QUESTION CARD ─── */
+  .q-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+  .q-card:hover { border-color: #3a3a3a; }
+
+  .q-num {
+    position: absolute;
+    top: -12px;
+    left: 20px;
+    background: var(--accent);
+    color: #000;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 99px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .q-text {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    margin-bottom: 18px;
+    color: var(--text);
+  }
+
+  code {
+    background: #111;
+    border: 1px solid #2a2a2a;
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: 'Space Mono', monospace;
+    color: var(--accent2);
+    font-size: 0.85em;
+  }
+
+  /* ─── OPTIONS ─── */
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .opt {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: background 0.15s, border-color 0.15s;
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+  .opt:hover { background: #222; border-color: #444; }
+
+  .opt input[type="radio"] { display: none; }
+
+  .opt-letter {
+    min-width: 22px;
+    height: 22px;
+    border: 1.5px solid var(--muted);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--muted);
+    flex-shrink: 0;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+
+  .opt:has(input:checked) {
+    background: #1e1e00;
+    border-color: var(--accent);
+  }
+  .opt:has(input:checked) .opt-letter {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000;
+  }
+
+  /* ─── RESULTS overlay per card ─── */
+  .opt.reveal-correct {
+    background: #0a2a0a;
+    border-color: var(--correct);
+  }
+  .opt.reveal-correct .opt-letter {
+    background: var(--correct);
+    border-color: var(--correct);
+    color: #fff;
+  }
+  .opt.reveal-wrong {
+    background: #2a0a0a;
+    border-color: var(--wrong);
+  }
+  .opt.reveal-wrong .opt-letter {
+    background: var(--wrong);
+    border-color: var(--wrong);
+    color: #fff;
+  }
+
+  /* explanation box */
+  .explanation {
+    display: none;
+    margin-top: 16px;
+    padding: 12px 14px;
+    background: #111;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    font-size: 0.78rem;
+    color: #ccc;
+    line-height: 1.6;
+  }
+  .explanation strong { color: var(--accent); }
+
+  /* ─── SUBMIT BUTTON ─── */
+  #submit-wrap {
+    max-width: 700px;
+    margin: 8px auto 0;
+    text-align: center;
+  }
+  #submit-btn {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    padding: 14px 48px;
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 0.85rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  #submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(240,192,64,0.3);
+  }
+  #submit-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* ─── SCORE PANEL ─── */
+  #score-panel {
+    display: none;
+    max-width: 700px;
+    margin: 36px auto 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 36px 32px;
+    text-align: center;
+  }
+  #score-panel h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  #score-value {
+    font-size: 4rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+    margin: 16px 0;
+  }
+  #score-value span { color: var(--accent); }
+  #score-msg {
+    color: var(--muted);
+    font-size: 0.78rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  #retry-btn {
+    background: transparent;
+    border: 1.5px solid var(--accent);
+    color: var(--accent);
+    padding: 10px 32px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    border-radius: var(--radius);
+    cursor: pointer;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: background 0.15s, color 0.15s;
+  }
+  #retry-btn:hover { background: var(--accent); color: #000; }
+
+  .score-bar-wrap { margin: 20px 0; }
+  .score-bar-track {
+    height: 8px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+  #score-bar-fill {
+    height: 100%;
+    border-radius: 99px;
+    width: 0%;
+    transition: width 1s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* warning banner */
+  #warn-banner {
+    display: none;
+    max-width: 700px;
+    margin: -12px auto 12px;
+    background: #2a1500;
+    border: 1px solid #ff9800;
+    color: #ff9800;
+    padding: 10px 16px;
+    border-radius: var(--radius);
+    font-size: 0.78rem;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Quiz Python</h1>
+  <p>Clase &amp; Funcții</p>
+  <div class="tag-line">15 întrebări · fără indicii · rezultat la final</div>
+</header>
+
+<div id="progress-bar-wrap">
+  <div id="progress-label"><span id="prog-text">0 / 15 răspunse</span><span id="prog-pct">0%</span></div>
+  <div id="progress-track"><div id="progress-fill"></div></div>
+</div>
+
+<div id="warn-banner">⚠️ Răspunde la toate întrebările înainte de a trimite!</div>
+
+<div id="quiz"></div>
+
+<div id="submit-wrap">
+  <button id="submit-btn" onclick="submitQuiz()">Verifică răspunsurile</button>
+</div>
+
+<div id="score-panel">
+  <h2>Rezultat final</h2>
+  <div id="score-value"><span id="s-correct">0</span> / 15</div>
+  <div id="score-msg" id="score-msg"></div>
+  <div class="score-bar-wrap">
+    <div class="score-bar-track"><div id="score-bar-fill"></div></div>
+  </div>
+  <button id="retry-btn" onclick="retryQuiz()">Încearcă din nou</button>
+</div>
+
+<script>
+const questions = [
+  {
+    text: "Ce face cuvântul cheie <code>def</code> în Python?",
+    opts: [
+      "Definește o variabilă globală",
+      "Definește (declară) o funcție",
+      "Definește o clasă nouă",
+      "Importă un modul extern"
+    ],
+    correct: 1,
+    explanation: "<strong>def</strong> este folosit pentru a declara o funcție în Python. Exemplu: <code>def salut(): print('Bună!')</code>"
+  },
+  {
+    text: "Ce face cuvântul cheie <code>class</code> în Python?",
+    opts: [
+      "Definește o funcție specială",
+      "Creează un obiect imediat",
+      "Definește un tip nou de date (o clasă)",
+      "Importă o bibliotecă"
+    ],
+    correct: 2,
+    explanation: "<strong>class</strong> definește o clasă, adică un șablon (blueprint) pentru crearea obiectelor."
+  },
+  {
+    text: "Care este rolul metodei <code>__init__</code> într-o clasă Python?",
+    opts: [
+      "Șterge obiectul din memorie",
+      "Este apelată automat la crearea unui obiect nou (constructor)",
+      "Returnează un string cu numele clasei",
+      "Inițializează modulul Python"
+    ],
+    correct: 1,
+    explanation: "<strong>__init__</strong> este constructorul clasei. Se execută automat când scriem <code>obj = MeaClasa()</code>, permițând inițializarea atributelor."
+  },
+  {
+    text: "Ce reprezintă parametrul <code>self</code> în metodele unei clase?",
+    opts: [
+      "O referință la clasa în sine (clasa, nu obiectul)",
+      "O referință la instanța (obiectul) curent",
+      "Un parametru opțional fără semnificație specială",
+      "Numele metodei"
+    ],
+    correct: 1,
+    explanation: "<strong>self</strong> referă instanța curentă a clasei. Prin el accesăm atributele și metodele obiectului: <code>self.nume = 'Ion'</code>."
+  },
+  {
+    text: "Care este diferența principală dintre o <strong>funcție</strong> și o <strong>metodă</strong> în Python?",
+    opts: [
+      "Nu există nicio diferență, termenii sunt sinonimi",
+      "O metodă este definită cu <code>method</code>, nu cu <code>def</code>",
+      "O metodă este o funcție definită în interiorul unei clase",
+      "O funcție poate returna valori, o metodă nu"
+    ],
+    correct: 2,
+    explanation: "O <strong>metodă</strong> este pur și simplu o funcție care aparține unei clase. Este tot definită cu <code>def</code>, dar primește implicit <code>self</code>."
+  },
+  {
+    text: "Care dintre următoarele este un atribut de <strong>instanță</strong> (nu de clasă)?",
+    opts: [
+      "<code>class Masina: roti = 4</code>",
+      "<code>self.culoare = 'rosu'</code> definit în <code>__init__</code>",
+      "<code>Masina.marca = 'Dacia'</code>",
+      "<code>MAX_VITEZA = 200</code> definit direct în clasă"
+    ],
+    correct: 1,
+    explanation: "Atributele de instanță sunt definite cu <code>self.atribut</code> și sunt unice pentru fiecare obiect. Cele de clasă sunt comune tuturor instanțelor."
+  },
+  {
+    text: "Ce returnează o funcție care nu conține instrucțiunea <code>return</code>?",
+    opts: [
+      "0",
+      "O eroare de tip <code>TypeError</code>",
+      "<code>None</code>",
+      "Un string gol <code>''</code>"
+    ],
+    correct: 2,
+    explanation: "În Python, dacă o funcție nu conține <code>return</code> (sau conține doar <code>return</code> fără valoare), returnează implicit <code>None</code>."
+  },
+  {
+    text: "Care cod creează corect o <strong>instanță</strong> a clasei <code>Caine</code>?",
+    opts: [
+      "<code>Caine.new()</code>",
+      "<code>new Caine()</code>",
+      "<code>Caine()</code>",
+      "<code>create Caine()</code>"
+    ],
+    correct: 2,
+    explanation: "În Python nu există <code>new</code>. Instanțierea se face apelând clasa ca pe o funcție: <code>rex = Caine()</code>."
+  },
+  {
+    text: "Ce este <strong>moștenirea</strong> (inheritance) în programarea orientată pe obiecte?",
+    opts: [
+      "Copierea codului dintr-un fișier în altul",
+      "Posibilitatea unei clase de a prelua atributele și metodele altei clase",
+      "Definirea mai multor funcții cu același nume",
+      "Importarea unei clase din alt modul"
+    ],
+    correct: 1,
+    explanation: "<strong>Moștenirea</strong> permite clasei copil să refolosească și să extindă codul clasei părinte: <code>class Catei(Caine): ...</code>"
+  },
+  {
+    text: "Ce înseamnă <code>__str__</code> într-o clasă Python?",
+    opts: [
+      "Convertește clasa într-un întreg",
+      "Definește reprezentarea string a obiectului (afișată de <code>print()</code>)",
+      "Stochează numele clasei ca string",
+      "Este echivalentul lui <code>__init__</code>"
+    ],
+    correct: 1,
+    explanation: "<strong>__str__</strong> este o metodă magică (dunder). Când apelăm <code>print(obj)</code>, Python cheamă <code>obj.__str__()</code> pentru a obține textul de afișat."
+  },
+  {
+    text: "Analizează codul următor. Ce va afișa?\n<br><br><code>def aduna(a, b=10):<br>&nbsp;&nbsp;&nbsp;&nbsp;return a + b<br>print(aduna(5))</code>",
+    opts: [
+      "Eroare: argumentul <code>b</code> lipsește",
+      "<code>5</code>",
+      "<code>15</code>",
+      "<code>10</code>"
+    ],
+    correct: 2,
+    explanation: "<code>b=10</code> este un <strong>argument cu valoare implicită</strong>. Dacă nu este furnizat la apel, se folosește valoarea default. Deci <code>5 + 10 = 15</code>."
+  },
+  {
+    text: "Ce este <strong>encapsularea</strong> în POO (Programare Orientată pe Obiecte)?",
+    opts: [
+      "Abilitatea de a crea mai multe obiecte dintr-o clasă",
+      "Gruparea datelor și metodelor într-o clasă, ascunzând detaliile interne",
+      "Moștenirea metodelor din clasa de bază",
+      "Definirea acelorași metode în clase diferite"
+    ],
+    correct: 1,
+    explanation: "<strong>Encapsularea</strong> înseamnă că datele și metodele sunt grupate în clasă. Atributele private (ex. <code>__parola</code>) sunt ascunse față de exterior."
+  },
+  {
+    text: "Ce tip de metodă este decorată cu <code>@staticmethod</code>?",
+    opts: [
+      "O metodă care nu poate fi apelată din exterior",
+      "O metodă care primește clasa (<code>cls</code>) ca prim argument",
+      "O metodă care nu primește <code>self</code> și nu depinde de starea obiectului",
+      "O metodă definită în afara clasei"
+    ],
+    correct: 2,
+    explanation: "<strong>@staticmethod</strong> definește o metodă care nu primește nici <code>self</code>, nici <code>cls</code>. Funcționează ca o funcție normală, dar e organizată logic în clasă."
+  },
+  {
+    text: "Ce va afișa codul următor?<br><br><code>class Animal:<br>&nbsp;&nbsp;&nbsp;&nbsp;sunet = 'generic'<br>a = Animal()<br>b = Animal()<br>a.sunet = 'ham'<br>print(b.sunet)</code>",
+    opts: [
+      "<code>ham</code>",
+      "<code>generic</code>",
+      "Eroare: atribut nedefinit",
+      "<code>None</code>"
+    ],
+    correct: 1,
+    explanation: "Modificarea <code>a.sunet</code> creează un atribut de <strong>instanță</strong> pentru <code>a</code>, fără să afecteze atributul de clasă sau obiectul <code>b</code>. <code>b.sunet</code> rămâne <code>'generic'</code>."
+  },
+  {
+    text: "Care este diferența dintre <code>*args</code> și <code>**kwargs</code> în definiția unei funcții?",
+    opts: [
+      "<code>*args</code> și <code>**kwargs</code> sunt identice",
+      "<code>*args</code> colectează argumente poziționale ca tuplu; <code>**kwargs</code> colectează argumente cu nume ca dicționar",
+      "<code>**kwargs</code> colectează argumente poziționale; <code>*args</code> colectează argumente cu nume",
+      "<code>*args</code> este pentru numere, <code>**kwargs</code> este pentru șiruri"
+    ],
+    correct: 1,
+    explanation: "<strong>*args</strong> permite un număr variabil de argumente poziționale (stocate ca tuplu). <strong>**kwargs</strong> permite argumente cu cuvânt cheie (stocate ca dicționar). Ex: <code>def f(*args, **kwargs)</code>."
+  }
+];
+
+const letters = ['A','B','C','D'];
+
+function buildQuiz() {
+  const container = document.getElementById('quiz');
+  container.innerHTML = '';
+  questions.forEach((q, qi) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = `card-${qi}`;
+
+    const num = document.createElement('div');
+    num.className = 'q-num';
+    num.textContent = `Întrebarea ${qi+1}`;
+    card.appendChild(num);
+
+    const text = document.createElement('div');
+    text.className = 'q-text';
+    text.innerHTML = q.text;
+    card.appendChild(text);
+
+    const opts = document.createElement('div');
+    opts.className = 'options';
+
+    q.opts.forEach((o, oi) => {
+      const label = document.createElement('label');
+      label.className = 'opt';
+      label.id = `opt-${qi}-${oi}`;
+
+      const inp = document.createElement('input');
+      inp.type = 'radio';
+      inp.name = `q${qi}`;
+      inp.value = oi;
+      inp.addEventListener('change', updateProgress);
+
+      const letter = document.createElement('div');
+      letter.className = 'opt-letter';
+      letter.textContent = letters[oi];
+
+      const span = document.createElement('span');
+      span.innerHTML = o;
+
+      label.appendChild(inp);
+      label.appendChild(letter);
+      label.appendChild(span);
+      opts.appendChild(label);
+    });
+
+    card.appendChild(opts);
+
+    const expl = document.createElement('div');
+    expl.className = 'explanation';
+    expl.id = `expl-${qi}`;
+    expl.innerHTML = q.explanation;
+    card.appendChild(expl);
+
+    container.appendChild(card);
+  });
+}
+
+function updateProgress() {
+  let answered = 0;
+  questions.forEach((_, qi) => {
+    if (document.querySelector(`input[name="q${qi}"]:checked`)) answered++;
+  });
+  const pct = Math.round((answered / questions.length) * 100);
+  document.getElementById('prog-text').textContent = `${answered} / ${questions.length} răspunse`;
+  document.getElementById('prog-pct').textContent = `${pct}%`;
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+function submitQuiz() {
+  // check all answered
+  let unanswered = [];
+  questions.forEach((_, qi) => {
+    if (!document.querySelector(`input[name="q${qi}"]:checked`)) unanswered.push(qi+1);
+  });
+  if (unanswered.length > 0) {
+    const wb = document.getElementById('warn-banner');
+    wb.style.display = 'block';
+    wb.textContent = `⚠️ Mai sunt ${unanswered.length} întrebări fără răspuns: ${unanswered.join(', ')}`;
+    return;
+  }
+  document.getElementById('warn-banner').style.display = 'none';
+
+  let score = 0;
+  questions.forEach((q, qi) => {
+    const chosen = document.querySelector(`input[name="q${qi}"]:checked`);
+    const chosenIdx = parseInt(chosen.value);
+
+    // disable all radios
+    document.querySelectorAll(`input[name="q${qi}"]`).forEach(r => r.disabled = true);
+
+    q.opts.forEach((_, oi) => {
+      const optEl = document.getElementById(`opt-${qi}-${oi}`);
+      optEl.style.cursor = 'default';
+      if (oi === q.correct) {
+        optEl.classList.add('reveal-correct');
+      } else if (oi === chosenIdx && chosenIdx !== q.correct) {
+        optEl.classList.add('reveal-wrong');
+      }
+    });
+
+    // show explanation
+    document.getElementById(`expl-${qi}`).style.display = 'block';
+
+    if (chosenIdx === q.correct) score++;
+  });
+
+  // show score panel
+  document.getElementById('s-correct').textContent = score;
+  const pct = Math.round((score / questions.length) * 100);
+  let msg = '';
+  if (pct === 100) msg = '🏆 Perfect! Excelent!';
+  else if (pct >= 80) msg = '👏 Foarte bine! Continuă tot așa!';
+  else if (pct >= 60) msg = '📚 Bine, dar mai e de lucru!';
+  else if (pct >= 40) msg = '💪 Merită să recitești materia!';
+  else msg = '📖 Recapitulează lecțiile și încearcă din nou!';
+  document.getElementById('score-msg').textContent = msg;
+
+  const fill = document.getElementById('score-bar-fill');
+  fill.style.background = pct >= 70
+    ? `linear-gradient(90deg, var(--correct), #81c784)`
+    : `linear-gradient(90deg, var(--wrong), #ef9a9a)`;
+
+  const panel = document.getElementById('score-panel');
+  panel.style.display = 'block';
+  setTimeout(() => { fill.style.width = pct + '%'; }, 100);
+
+  document.getElementById('submit-btn').disabled = true;
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function retryQuiz() {
+  document.getElementById('score-panel').style.display = 'none';
+  document.getElementById('score-bar-fill').style.width = '0%';
+  document.getElementById('submit-btn').disabled = false;
+  document.getElementById('warn-banner').style.display = 'none';
+  buildQuiz();
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+buildQuiz();
+updateProgress();
+</script>
+</body>
+</html>
