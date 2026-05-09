@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pădurea Fermecată Python 🧚</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --parch:    #fdf8ef;
+  --parch2:   #f7f0de;
+  --parch3:   #ede2c8;
+  --forest:   #1a3d28;
+  --forest2:  #2d5a3a;
+  --moss:     #4a7c52;
+  --moss2:    #6ba874;
+  --leaf:     #8ec98a;
+  --leaf-dim: rgba(142,201,138,0.12);
+  --gold:     #c8912a;
+  --gold2:    #e8b84a;
+  --gold-dim: rgba(200,145,42,0.12);
+  --rose:     #d4607a;
+  --rose2:    #e8809a;
+  --rose-dim: rgba(212,96,122,0.12);
+  --violet:   #8060b8;
+  --violet2:  #a480d8;
+  --vio-dim:  rgba(128,96,184,0.12);
+  --sky:      #4890c8;
+  --sky-dim:  rgba(72,144,200,0.12);
+  --glow:     #c8f8c0;
+  --glow2:    #98e890;
+  --ink:      #1a2010;
+  --ink2:     #2e3c20;
+  --muted:    #7a6848;
+  --border:   rgba(26,61,40,0.18);
+  --radius:   16px;
+  --shadow:   0 4px 24px rgba(26,61,40,0.14);
+  --shadow2:  0 8px 40px rgba(26,61,40,0.18);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--parch);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Ctext y='18' font-size='18'%3E🧚%3C/text%3E%3C/svg%3E") 12 12, auto;
+}
+
+/* ─── FOREST BACKGROUND ─── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 110%, rgba(26,61,40,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 10% 90%, rgba(74,124,82,0.10) 0%, transparent 55%),
+    radial-gradient(ellipse 35% 25% at 90% 95%, rgba(74,124,82,0.10) 0%, transparent 55%),
+    radial-gradient(ellipse 25% 20% at 25% 15%, rgba(200,145,42,0.06) 0%, transparent 55%),
+    radial-gradient(ellipse 25% 20% at 75% 10%, rgba(128,96,184,0.05) 0%, transparent 55%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.022'/%3E%3C/svg%3E");
+}
+
+/* ─── FIREFLY PARTICLES ─── */
+.fireflies { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.ff {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--glow2);
+  box-shadow: 0 0 6px 2px rgba(152,232,144,0.8);
+  animation: ffFloat linear infinite;
+}
+@keyframes ffFloat {
+  0%   { transform: translate(0,0) scale(0.4); opacity: 0; }
+  20%  { opacity: 1; }
+  50%  { transform: translate(var(--tx), var(--ty)) scale(1); opacity: 0.85; }
+  80%  { opacity: 0.6; }
+  100% { transform: translate(var(--tx2), var(--ty2)) scale(0.3); opacity: 0; }
+}
+
+/* ─── PROGRESS ─── */
+.prog-strip { position: fixed; top: 0; left: 0; right: 0; height: 5px; z-index: 200; background: var(--parch3); }
+.prog-fill { height: 100%; background: linear-gradient(90deg, var(--moss), var(--gold2), var(--rose)); transition: width .5s ease; border-radius: 0 3px 3px 0; box-shadow: 0 0 10px rgba(200,145,42,0.5); }
+
+/* ─── WRAP ─── */
+.wrap { position: relative; z-index: 1; max-width: 920px; margin: 0 auto; padding: 2rem 1.5rem 6rem; }
+
+/* ─── HERO ─── */
+.hero {
+  text-align: center;
+  padding: 4.5rem 2.5rem 4rem;
+  background: linear-gradient(160deg, #f0ead8 0%, #f7f2e4 40%, #eee8d5 100%);
+  border-radius: 28px;
+  border: 3px solid rgba(200,145,42,0.35);
+  margin-bottom: 2rem;
+  position: relative; overflow: hidden;
+  box-shadow: var(--shadow2), inset 0 0 60px rgba(200,145,42,0.04);
+}
+
+/* Corner ornaments */
+.hero::before, .hero::after {
+  content: '✦';
+  position: absolute;
+  font-size: 1.5rem;
+  color: rgba(200,145,42,0.3);
+}
+.hero::before { top: 20px; left: 24px; }
+.hero::after  { bottom: 20px; right: 24px; }
+
+/* vines decoration */
+.hero-vines {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
+  background: linear-gradient(180deg, transparent, rgba(74,124,82,0.07));
+  pointer-events: none;
+}
+
+.hero-fairy { font-size: 76px; display: block; margin-bottom: 1rem; animation: fairyFloat 4s ease-in-out infinite; filter: drop-shadow(0 6px 20px rgba(200,145,42,0.4)); }
+@keyframes fairyFloat { 0%,100%{transform:translateY(0) rotate(-4deg)} 50%{transform:translateY(-16px) rotate(4deg)} }
+
+.hero h1 {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.6rem, 5vw, 3.2rem);
+  font-weight: 900;
+  color: var(--forest);
+  line-height: 1.15;
+  margin-bottom: .7rem;
+  text-shadow: 0 2px 8px rgba(26,61,40,0.12);
+}
+.hero h1 span { color: var(--gold); }
+.hero-sub { font-family: 'Lora', serif; font-size: 1.05rem; font-style: italic; color: var(--muted); margin-bottom: 1.3rem; }
+.hero-tags { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.htag { font-size: .72rem; font-weight: 800; padding: 4px 14px; border-radius: 50px; letter-spacing: .5px; text-transform: uppercase; }
+.htag.g { background: var(--leaf-dim); color: var(--forest); border: 1.5px solid rgba(74,124,82,0.35); }
+.htag.y { background: var(--gold-dim); color: var(--gold); border: 1.5px solid rgba(200,145,42,0.35); }
+.htag.r { background: var(--rose-dim); color: var(--rose); border: 1.5px solid rgba(212,96,122,0.35); }
+.htag.v { background: var(--vio-dim); color: var(--violet); border: 1.5px solid rgba(128,96,184,0.35); }
+
+/* ─── HUD ─── */
+.hud {
+  position: sticky; top: 5px; z-index: 100;
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(253,248,239,0.94);
+  border: 2px solid rgba(200,145,42,0.25);
+  border-radius: 50px;
+  padding: 8px 20px;
+  margin: 0 0 1rem;
+  box-shadow: 0 4px 20px rgba(26,61,40,0.10);
+  backdrop-filter: blur(8px);
+}
+.hud-lbl { font-family: 'Cinzel Decorative', serif; font-size: .68rem; color: var(--forest); white-space: nowrap; font-weight: 700; }
+.xp-wrap { flex: 1; display: flex; align-items: center; gap: 8px; }
+.xp-bar { flex: 1; height: 12px; background: var(--parch3); border-radius: 20px; overflow: hidden; border: 1.5px solid rgba(200,145,42,0.25); }
+.xp-in { height: 100%; background: linear-gradient(90deg, var(--moss), var(--gold2)); border-radius: 20px; transition: width .6s cubic-bezier(.34,1.56,.64,1); box-shadow: 0 0 8px rgba(200,145,42,0.4); }
+.xp-count { font-size: .72rem; color: var(--gold); font-weight: 800; white-space: nowrap; }
+.rank-badge { font-family: 'Cinzel Decorative', serif; font-size: .62rem; background: linear-gradient(135deg, var(--forest), var(--moss)); color: var(--gold2); padding: 5px 14px; border-radius: 50px; white-space: nowrap; font-weight: 700; box-shadow: 0 2px 10px rgba(26,61,40,0.2); }
+
+/* ─── SCORES ─── */
+.scores { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.sc { flex: 1; min-width: 100px; background: white; border: 1.5px solid var(--border); border-radius: 14px; padding: .65rem .9rem; text-align: center; box-shadow: 0 2px 10px rgba(26,61,40,0.06); }
+.sc-v { font-family: 'Cinzel Decorative', serif; font-size: 1.3rem; color: var(--gold); }
+.sc-l { font-size: .7rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-top: 3px; }
+
+/* ─── NAV ─── */
+.sticky-nav {
+  position: sticky; top: 56px; z-index: 90;
+  display: flex; align-items: center; gap: 1.2rem;
+  background: rgba(253,248,239,0.92);
+  border-bottom: 1px solid rgba(200,145,42,0.18);
+  padding: .6rem 1.5rem; margin: 0 -1.5rem 1.5rem;
+  overflow-x: auto; backdrop-filter: blur(6px);
+}
+.nav-logo { font-family: 'Cinzel Decorative', serif; font-size: .72rem; color: var(--forest); white-space: nowrap; margin-right: .5rem; }
+.sticky-nav a { text-decoration: none; color: var(--muted); font-size: .72rem; font-weight: 700; white-space: nowrap; transition: color .2s; letter-spacing: .5px; text-transform: uppercase; }
+.sticky-nav a:hover { color: var(--forest); }
+
+/* ─── CHAPTER ─── */
+.chap { display: flex; align-items: center; gap: 1rem; margin: 2.8rem 0 1.2rem; }
+.cl { flex: 1; height: 1px; opacity: .5; }
+.cl.forest { background: linear-gradient(90deg, transparent, var(--forest)); }
+.cl.forest.rev { background: linear-gradient(270deg, transparent, var(--forest)); }
+.cl.gold { background: linear-gradient(90deg, transparent, var(--gold)); }
+.cl.gold.rev { background: linear-gradient(270deg, transparent, var(--gold)); }
+.cl.rose { background: linear-gradient(90deg, transparent, var(--rose)); }
+.cl.rose.rev { background: linear-gradient(270deg, transparent, var(--rose)); }
+.cl.violet { background: linear-gradient(90deg, transparent, var(--violet)); }
+.cl.violet.rev { background: linear-gradient(270deg, transparent, var(--violet)); }
+.chap-lbl { font-family: 'Cinzel Decorative', serif; font-size: .65rem; white-space: nowrap; padding: 5px 18px; border-radius: 50px; font-weight: 700; letter-spacing: .5px; }
+.chap-lbl.forest { color: var(--forest); border: 1.5px solid rgba(26,61,40,0.3); background: var(--leaf-dim); }
+.chap-lbl.gold   { color: var(--gold); border: 1.5px solid rgba(200,145,42,0.3); background: var(--gold-dim); }
+.chap-lbl.rose   { color: var(--rose); border: 1.5px solid rgba(212,96,122,0.3); background: var(--rose-dim); }
+.chap-lbl.violet { color: var(--violet); border: 1.5px solid rgba(128,96,184,0.3); background: var(--vio-dim); }
+
+/* ─── SECTION CARD ─── */
+.scard {
+  background: white; border-radius: var(--radius);
+  padding: 2rem; margin-bottom: 1.5rem;
+  border: 1.5px solid var(--border);
+  position: relative; overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.scard::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--moss), var(--gold2), var(--moss)); border-radius: var(--radius) var(--radius) 0 0; }
+.scard.gold-t::before { background: linear-gradient(90deg, var(--gold), var(--gold2), var(--gold)); }
+.scard.rose-t::before { background: linear-gradient(90deg, var(--rose), var(--rose2), var(--rose)); }
+.scard.vio-t::before { background: linear-gradient(90deg, var(--violet), var(--violet2), var(--violet)); }
+.scard.sky-t::before { background: linear-gradient(90deg, var(--sky), #6ab0e0, var(--sky)); }
+
+.scard-hdr { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.3rem; }
+.scard-ico { font-size: 2.2rem; }
+.scard-title { font-family: 'Cinzel Decorative', serif; font-size: 1rem; font-weight: 700; color: var(--forest); line-height: 1.3; }
+.scard.gold-t .scard-title { color: var(--gold); }
+.scard.rose-t .scard-title { color: var(--rose); }
+.scard.vio-t .scard-title { color: var(--violet); }
+.scard.sky-t .scard-title { color: var(--sky); }
+.scard-sub { font-size: .8rem; color: var(--muted); font-weight: 600; margin-top: 2px; }
+
+/* ─── BADGE ─── */
+.badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 11px; border-radius: 50px; font-size: .68rem; font-weight: 800; margin-left: auto; letter-spacing: .5px; text-transform: uppercase; }
+.bl { background: var(--leaf-dim); color: var(--forest); border: 1.5px solid rgba(74,124,82,0.35); }
+.be { background: var(--gold-dim); color: var(--gold); border: 1.5px solid rgba(200,145,42,0.35); }
+.bg { background: var(--rose-dim); color: var(--rose); border: 1.5px solid rgba(212,96,122,0.35); }
+.bq { background: var(--vio-dim); color: var(--violet); border: 1.5px solid rgba(128,96,184,0.35); }
+.bb { background: var(--sky-dim); color: var(--sky); border: 1.5px solid rgba(72,144,200,0.35); }
+.bx { background: rgba(212,96,122,0.12); color: var(--rose); border: 1.5px solid rgba(212,96,122,0.3); }
+
+/* ─── LORE ─── */
+.lore { background: linear-gradient(135deg, rgba(74,124,82,0.07), rgba(200,145,42,0.05)); border-left: 4px solid var(--moss); border-radius: 0 12px 12px 0; padding: 1rem 1.2rem; margin-bottom: 1.2rem; font-family: 'Lora', serif; font-size: .95rem; font-style: italic; line-height: 1.8; color: var(--ink2); }
+.lore .nar { display: block; font-family: 'Cinzel Decorative', serif; font-style: normal; font-size: .65rem; font-weight: 700; color: var(--moss); margin-bottom: 5px; letter-spacing: 1px; }
+.lore.gold { border-left-color: var(--gold); background: linear-gradient(135deg, rgba(200,145,42,0.07), rgba(232,184,74,0.04)); }
+.lore.gold .nar { color: var(--gold); }
+.lore.rose { border-left-color: var(--rose); background: linear-gradient(135deg, rgba(212,96,122,0.07), rgba(232,128,154,0.04)); }
+.lore.rose .nar { color: var(--rose); }
+.lore.violet { border-left-color: var(--violet); background: linear-gradient(135deg, rgba(128,96,184,0.07), rgba(164,128,216,0.04)); }
+.lore.violet .nar { color: var(--violet); }
+
+/* ─── THEORY BOX ─── */
+.theory { background: var(--parch2); border: 1.5px solid rgba(200,145,42,0.2); border-radius: 12px; padding: 1rem 1.2rem; margin: 1rem 0; font-size: .91rem; line-height: 1.85; }
+.theory h4 { font-family: 'Cinzel Decorative', serif; font-size: .62rem; color: var(--gold); letter-spacing: 1px; margin-bottom: .7rem; }
+.theory ul { list-style: none; padding: 0; }
+.theory li { padding: 3px 0 3px 1.4rem; position: relative; color: var(--ink2); }
+.theory li::before { content: '🌿'; position: absolute; left: 0; font-size: .65rem; top: 5px; }
+.theory li strong { color: var(--forest); }
+
+/* ─── SCOPE VISUAL ─── */
+.scope-diagram {
+  display: flex; gap: 12px; margin: 1.2rem 0; flex-wrap: wrap;
+}
+.scope-global, .scope-local {
+  flex: 1; min-width: 220px;
+  border-radius: 14px; padding: 1.2rem;
+}
+.scope-global {
+  background: linear-gradient(135deg, #f0f8ee, #e8f2e4);
+  border: 2px solid rgba(74,124,82,0.4);
+}
+.scope-local {
+  background: linear-gradient(135deg, #fef8ee, #faf0e0);
+  border: 2px solid rgba(200,145,42,0.4);
+  border-style: dashed;
+}
+.scope-title { font-family: 'Cinzel Decorative', serif; font-size: .7rem; font-weight: 700; margin-bottom: .8rem; display: flex; align-items: center; gap: 6px; }
+.scope-title.forest { color: var(--forest); }
+.scope-title.gold { color: var(--gold); }
+.scope-var { background: white; border-radius: 8px; padding: 5px 10px; font-family: 'Courier New', monospace; font-size: .82rem; margin-bottom: 6px; border: 1.5px solid; display: flex; align-items: center; gap: 8px; }
+.scope-var.gv { border-color: rgba(74,124,82,0.4); color: var(--forest); }
+.scope-var.lv { border-color: rgba(200,145,42,0.4); color: var(--gold); }
+.scope-var.gone { opacity: .35; text-decoration: line-through; }
+
+/* ─── CODE ─── */
+.code {
+  background: #0f1f10;
+  border-radius: 12px;
+  padding: 1.2rem 1.4rem;
+  font-family: 'Courier New', monospace;
+  font-size: .88rem; line-height: 1.95;
+  margin: 1rem 0; position: relative; overflow-x: auto;
+  box-shadow: 0 4px 20px rgba(15,31,16,0.25);
+  border: 1px solid rgba(74,124,82,0.25);
+}
+.code-fn { position: absolute; top: 0; left: 0; right: 0; background: rgba(74,124,82,0.2); border-bottom: 1px solid rgba(74,124,82,0.2); padding: 4px 12px; font-family: 'Nunito', sans-serif; font-size: .6rem; color: rgba(142,201,138,0.7); border-radius: 12px 12px 0 0; letter-spacing: 1px; text-transform: uppercase; }
+.code.has-fn { padding-top: 2.2rem; }
+.kw  { color: #d4a0f8; font-weight: 700; }
+.fn  { color: #80e8a0; }
+.str { color: #e8d870; }
+.num { color: #f8a060; }
+.cmt { color: #2a4820; font-style: italic; }
+.glob { color: #80d8f8; font-weight: 700; }
+.loc  { color: #f8e060; }
+.param { color: #f8a0c0; }
+
+/* ─── PARAM DIAGRAM ─── */
+.param-diagram { background: var(--parch2); border-radius: 14px; padding: 1.3rem; margin: 1rem 0; border: 1.5px solid rgba(200,145,42,0.2); }
+.pd-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: .4rem 0; }
+.pd-box { background: white; border-radius: 8px; padding: 6px 14px; font-family: 'Courier New', monospace; font-size: .82rem; font-weight: 700; border: 2px solid; white-space: nowrap; }
+.pd-box.fn  { border-color: var(--moss); color: var(--forest); }
+.pd-box.par { border-color: var(--rose); color: var(--rose); }
+.pd-box.def { border-color: var(--gold); color: var(--gold); }
+.pd-box.arg { border-color: var(--violet); color: var(--violet); }
+.pd-arrow { color: var(--muted); font-size: .9rem; }
+.pd-label { font-size: .68rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .5px; }
+
+/* ─── CALLOUT ─── */
+.callout { border-radius: 10px; padding: 1rem 1.2rem; margin: 1rem 0; display: flex; gap: 10px; align-items: flex-start; font-size: .9rem; line-height: 1.75; }
+.callout-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 1px; }
+.callout-body strong { display: block; font-family: 'Cinzel Decorative', serif; font-size: .6rem; letter-spacing: 1px; text-transform: uppercase; margin-bottom: .3rem; }
+.callout.tip { background: var(--leaf-dim); border: 1.5px solid rgba(74,124,82,0.25); }
+.callout.tip strong { color: var(--moss); }
+.callout.tip .callout-body { color: var(--ink2); }
+.callout.warn { background: var(--gold-dim); border: 1.5px solid rgba(200,145,42,0.25); }
+.callout.warn strong { color: var(--gold); }
+.callout.warn .callout-body { color: var(--ink2); }
+.callout.magic { background: var(--vio-dim); border: 1.5px solid rgba(128,96,184,0.25); }
+.callout.magic strong { color: var(--violet); }
+.callout.magic .callout-body { color: var(--ink2); }
+
+/* ─── FILL BLANK ─── */
+.bex { background: var(--parch2); border: 2px dashed rgba(74,124,82,0.35); border-radius: 14px; padding: 1.3rem 1.5rem; margin: 1rem 0; }
+.bex.gold-bex { background: var(--gold-dim); border-color: rgba(200,145,42,0.35); }
+.bex.rose-bex { background: var(--rose-dim); border-color: rgba(212,96,122,0.35); }
+.bex.vio-bex  { background: var(--vio-dim);  border-color: rgba(128,96,184,0.35); }
+.bex.sky-bex  { background: var(--sky-dim);  border-color: rgba(72,144,200,0.35); }
+.ext { font-family: 'Cinzel Decorative', serif; font-size: .65rem; color: var(--moss); letter-spacing: .5px; margin-bottom: .8rem; font-weight: 700; }
+.bex.gold-bex .ext { color: var(--gold); }
+.bex.rose-bex .ext { color: var(--rose); }
+.bex.vio-bex .ext  { color: var(--violet); }
+.bex.sky-bex .ext  { color: var(--sky); }
+.ca { background: #0f1f10; border-radius: 10px; padding: 1rem 1.2rem; font-family: 'Courier New', monospace; font-size: .87rem; line-height: 2.1; color: #d8e8d0; margin-bottom: 1rem; overflow-x: auto; border: 1px solid rgba(74,124,82,0.2); }
+.blank { display: inline-block; background: rgba(255,255,255,0.1); border: 2px solid rgba(200,145,42,0.6); border-radius: 6px; min-width: 100px; padding: 1px 9px; font-family: 'Courier New', monospace; font-size: .85rem; color: var(--gold2); font-weight: 700; outline: none; transition: all .2s; vertical-align: middle; }
+.blank:focus { border-color: var(--moss); background: rgba(74,124,82,0.15); color: var(--leaf); }
+.blank.ok { border-color: var(--moss); background: rgba(74,124,82,0.2); color: #80e8a0; }
+.blank.no { border-color: var(--rose); background: rgba(212,96,122,0.15); color: var(--rose2); animation: fairyShake .4s; }
+@keyframes fairyShake { 0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-5px)} 40%,80%{transform:translateX(5px)} }
+.hint { display: inline-flex; align-items: center; gap: 5px; background: var(--vio-dim); border: 1.5px solid rgba(128,96,184,0.25); border-radius: 50px; padding: 4px 12px; font-size: .78rem; color: var(--violet); font-weight: 700; margin-top: .6rem; }
+
+/* ─── BUTTONS ─── */
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 22px; border-radius: 50px; font-family: 'Nunito', sans-serif; font-size: .9rem; font-weight: 800; cursor: pointer; border: none; transition: transform .15s, box-shadow .15s; }
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: scale(.97); }
+.btn-forest { background: linear-gradient(135deg, var(--forest2), var(--moss)); color: white; box-shadow: 0 4px 16px rgba(26,61,40,0.35); }
+.btn-gold   { background: linear-gradient(135deg, var(--gold), var(--gold2)); color: var(--forest); box-shadow: 0 4px 16px rgba(200,145,42,0.35); }
+.btn-rose   { background: linear-gradient(135deg, var(--rose), var(--rose2)); color: white; box-shadow: 0 4px 16px rgba(212,96,122,0.35); }
+.btn-violet { background: linear-gradient(135deg, var(--violet), var(--violet2)); color: white; box-shadow: 0 4px 16px rgba(128,96,184,0.35); }
+.btn-sky    { background: linear-gradient(135deg, var(--sky), #6ab0e0); color: white; box-shadow: 0 4px 14px rgba(72,144,200,0.35); }
+.btn-ghost  { background: white; color: var(--muted); border: 1.5px solid rgba(26,61,40,0.2); box-shadow: 0 2px 8px rgba(26,61,40,0.08); }
+.bgrp { display: flex; gap: 8px; flex-wrap: wrap; margin-top: .8rem; }
+
+/* ─── FEEDBACK ─── */
+.fb { display: none; border-radius: 10px; padding: .75rem 1.1rem; font-weight: 700; font-size: .9rem; margin-top: .8rem; align-items: center; gap: 10px; }
+.fb.show { display: flex; }
+.fb.ok { background: var(--leaf-dim); color: var(--forest); border: 1.5px solid rgba(74,124,82,0.3); }
+.fb.err { background: var(--rose-dim); color: var(--rose); border: 1.5px solid rgba(212,96,122,0.3); }
+
+/* ─── TRUE/FALSE ─── */
+.tf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 1rem 0; }
+.tf-item { background: var(--parch2); border: 1.5px solid var(--border); border-radius: 12px; padding: .9rem 1rem; box-shadow: 0 2px 8px rgba(26,61,40,0.06); }
+.tf-q { font-family: 'Lora', serif; font-size: .88rem; line-height: 1.6; color: var(--ink2); margin-bottom: .7rem; }
+.tf-btns { display: flex; gap: 8px; }
+.tf-btn { flex: 1; padding: 7px; border-radius: 50px; font-family: 'Nunito', sans-serif; font-size: .82rem; font-weight: 800; cursor: pointer; border: 2px solid; transition: all .2s; }
+.tft { background: var(--leaf-dim); border-color: rgba(74,124,82,0.4); color: var(--forest2); }
+.tff { background: var(--rose-dim); border-color: rgba(212,96,122,0.35); color: var(--rose); }
+.tf-btn:hover { filter: brightness(.92); transform: scale(1.02); }
+.tf-btn.sok { background: rgba(74,124,82,0.22); border-color: var(--moss); }
+.tf-btn.sno { background: rgba(212,96,122,0.22); border-color: var(--rose); }
+.tf-fb { font-family: 'Lora', serif; font-size: .8rem; margin-top: .5rem; display: none; line-height: 1.55; font-style: italic; }
+.tf-fb.show { display: block; }
+.tf-fb.ok { color: var(--forest2); }
+.tf-fb.err { color: var(--rose); }
+
+/* ─── QUIZ ─── */
+.qcard { background: var(--parch2); border: 1.5px solid rgba(200,145,42,0.2); border-radius: 14px; padding: 1.1rem 1.3rem; margin-bottom: 1rem; box-shadow: 0 2px 8px rgba(26,61,40,0.06); }
+.qcard.rose-q { border-color: rgba(212,96,122,0.2); }
+.qcard.vio-q  { border-color: rgba(128,96,184,0.2); }
+.qcard.sky-q  { border-color: rgba(72,144,200,0.2); }
+.qnum { font-family: 'Cinzel Decorative', serif; font-size: .6rem; color: var(--gold); letter-spacing: 1px; margin-bottom: .4rem; }
+.qcard.rose-q .qnum { color: var(--rose); }
+.qcard.vio-q .qnum  { color: var(--violet); }
+.qcard.sky-q .qnum  { color: var(--sky); }
+.qq { font-family: 'Lora', serif; font-size: .92rem; margin-bottom: .9rem; color: var(--ink2); line-height: 1.55; }
+.qopts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.qopt { background: white; border: 1.5px solid rgba(200,145,42,0.22); border-radius: 10px; padding: .65rem 1rem; font-size: .84rem; font-weight: 600; cursor: pointer; transition: all .2s; font-family: 'Nunito', sans-serif; color: var(--ink2); text-align: left; }
+.qcard.rose-q .qopt { border-color: rgba(212,96,122,0.22); }
+.qcard.vio-q .qopt  { border-color: rgba(128,96,184,0.22); }
+.qcard.sky-q .qopt  { border-color: rgba(72,144,200,0.22); }
+.qopt:hover { background: var(--parch2); transform: scale(1.01); }
+.qopt.correct { background: var(--leaf-dim); border-color: var(--moss); color: var(--forest); }
+.qopt.wrong { background: var(--rose-dim); border-color: var(--rose); color: var(--rose); animation: fairyShake .3s; }
+
+/* ─── MATCH ─── */
+.match-box { background: linear-gradient(160deg, #f5f0ea, #ede8de); border: 2px solid rgba(128,96,184,0.35); border-radius: 18px; padding: 1.8rem; box-shadow: 0 4px 24px rgba(128,96,184,0.12); }
+.match-box h3 { font-family: 'Cinzel Decorative', serif; font-size: .9rem; color: var(--violet); margin-bottom: .4rem; }
+.match-box p { font-family: 'Lora', serif; font-size: .87rem; font-style: italic; color: var(--muted); margin-bottom: 1.2rem; line-height: 1.6; }
+.match-cols { display: flex; gap: 1.2rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+.mcol { flex: 1; min-width: 175px; }
+.mlbl { font-family: 'Cinzel Decorative', serif; font-size: .6rem; color: var(--muted); letter-spacing: .5px; margin-bottom: .5rem; }
+.mi { background: white; border: 1.5px solid rgba(128,96,184,0.25); border-radius: 10px; padding: .55rem .9rem; font-size: .83rem; font-weight: 700; cursor: pointer; margin-bottom: 5px; transition: all .2s; color: var(--ink2); box-shadow: 0 2px 6px rgba(26,61,40,0.06); }
+.mi:hover { background: var(--parch2); border-color: var(--violet); }
+.mi.sel { background: var(--vio-dim); border-color: var(--violet); color: var(--violet); }
+.mi.mat { background: var(--leaf-dim); border-color: var(--moss); color: var(--forest); cursor: default; }
+.mi.bad { background: var(--rose-dim); border-color: var(--rose); color: var(--rose); animation: fairyShake .4s; }
+.mres { text-align: center; padding: .75rem; background: white; border-radius: 10px; font-family: 'Lora', serif; font-style: italic; font-size: .88rem; min-height: 42px; display: flex; align-items: center; justify-content: center; color: var(--muted); box-shadow: 0 2px 6px rgba(26,61,40,0.06); }
+
+/* ─── ORDER ─── */
+.ogame { background: var(--gold-dim); border: 1.5px solid rgba(200,145,42,0.25); border-radius: 14px; padding: 1.2rem; }
+.otitle { font-family: 'Cinzel Decorative', serif; font-size: .65rem; color: var(--gold); letter-spacing: .5px; margin-bottom: .8rem; font-weight: 700; }
+.olist { display: flex; flex-direction: column; gap: 6px; }
+.oi { background: white; border: 1.5px solid rgba(200,145,42,0.28); border-radius: 10px; padding: .65rem 1rem; font-family: 'Courier New', monospace; font-size: .85rem; cursor: grab; display: flex; align-items: center; gap: 10px; transition: all .2s; color: var(--ink); font-weight: 600; user-select: none; box-shadow: 0 2px 6px rgba(26,61,40,0.06); }
+.oi:hover { border-color: var(--gold); background: var(--parch2); }
+.oi.dragging { opacity: .3; }
+.oi.over { border-style: dashed; border-color: var(--moss); }
+.dh { color: var(--gold); font-size: .9rem; }
+
+/* ─── SPARKLE BURST ─── */
+.sb { position: fixed; pointer-events: none; font-size: 1.8rem; animation: sbgo 1.3s ease forwards; z-index: 9999; }
+@keyframes sbgo { 0%{transform:scale(0) translateY(0);opacity:1} 100%{transform:scale(2.5) translateY(-130px);opacity:0} }
+
+/* ─── MAGIC POPUP ─── */
+.magic-popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%,-50%) scale(0); z-index: 500; background: white; border: 3px solid var(--gold); border-radius: 24px; padding: 2.5rem 3.5rem; text-align: center; box-shadow: 0 12px 60px rgba(200,145,42,0.35), 0 0 0 8px rgba(200,145,42,0.1); }
+.magic-popup.show { display: block; animation: magicPop .5s cubic-bezier(.175,.885,.32,1.275) forwards; }
+@keyframes magicPop { from{transform:translate(-50%,-50%) scale(0)} to{transform:translate(-50%,-50%) scale(1)} }
+.magic-popup .mp-emoji { font-size: 3.5rem; display: block; margin-bottom: .6rem; animation: fairyFloat 2s ease-in-out infinite; }
+.magic-popup .mp-text { font-family: 'Cinzel Decorative', serif; font-size: 1.3rem; color: var(--forest); }
+
+/* ─── COMPLETION ─── */
+.compl { display: none; text-align: center; padding: 4rem 2.5rem; background: linear-gradient(150deg, #f7f2e4, #eee8d5, #f0ead8); border: 3px solid var(--gold); border-radius: 28px; box-shadow: 0 12px 60px rgba(200,145,42,0.2); margin-top: 2rem; }
+.compl.show { display: block; animation: popIn .6s cubic-bezier(.175,.885,.32,1.275); }
+@keyframes popIn { from{transform:scale(.4);opacity:0} to{transform:scale(1);opacity:1} }
+.compl .big { font-size: 80px; display: block; margin-bottom: 1rem; animation: fairyFloat 3s ease-in-out infinite; }
+.compl h2 { font-family: 'Cinzel Decorative', serif; font-size: 2rem; color: var(--forest); margin-bottom: .8rem; }
+.compl p { font-family: 'Lora', serif; font-size: 1rem; font-style: italic; color: var(--muted); line-height: 1.9; }
+
+@media(max-width:620px){
+  .tf-grid,.qopts{grid-template-columns:1fr;}
+  .match-cols{flex-direction:column;}
+  .scores{display:grid;grid-template-columns:1fr 1fr;}
+  .hero h1{font-size:1.4rem;}
+  .scope-diagram{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+
+<!-- FIREFLIES -->
+<div class="fireflies" id="fireflies"></div>
+
+<!-- MAGIC POPUP -->
+<div class="magic-popup" id="magicPopup">
+  <span class="mp-emoji" id="mpEmoji">✨</span>
+  <div class="mp-text" id="mpText">Magie Descoperită!</div>
+</div>
+
+<!-- PROGRESS -->
+<div class="prog-strip"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+
+<div class="wrap">
+
+<!-- ════ HERO ════ -->
+<div class="hero">
+  <div class="hero-vines"></div>
+  <span class="hero-fairy">🧚</span>
+  <h1>Pădurea Fermecată<br><span>a Variabilelor</span></h1>
+  <p class="hero-sub">Un Ghid Vrăjit prin Magia Variabilelor Globale, Locale și a Parametrilor</p>
+  <div class="hero-tags">
+    <span class="htag g">🌿 Globale</span>
+    <span class="htag y">✨ Locale</span>
+    <span class="htag r">🌸 Parametri</span>
+    <span class="htag v">🔮 12 Exerciții</span>
+  </div>
+</div>
+
+<!-- HUD -->
+<div class="hud">
+  <span class="hud-lbl">🧚 Vrăjitoarele</span>
+  <div class="xp-wrap">
+    <div class="xp-bar"><div class="xp-in" id="xpBar" style="width:0%"></div></div>
+    <span class="xp-count">✨ <span id="xpNum">0</span>/30 XP</span>
+  </div>
+  <span class="rank-badge" id="rankBadge">🌱 Novice</span>
+</div>
+
+<div class="scores">
+  <div class="sc"><div class="sc-v" id="scEx">0/12</div><div class="sc-l">Exerciții</div></div>
+  <div class="sc"><div class="sc-v" id="scTF">0/12</div><div class="sc-l">Adevărat/Fals</div></div>
+  <div class="sc"><div class="sc-v" id="scQz">0/12</div><div class="sc-l">Quiz</div></div>
+  <div class="sc"><div class="sc-v" id="scBon">0/2</div><div class="sc-l">Bonus</div></div>
+</div>
+
+<nav class="sticky-nav">
+  <span class="nav-logo">🧚 Pădure</span>
+  <a href="#c1">Globale</a>
+  <a href="#c2">Locale</a>
+  <a href="#c3">Global vs Local</a>
+  <a href="#c4">Parametri</a>
+  <a href="#c5">Default</a>
+  <a href="#c6">*args</a>
+  <a href="#c7">Bonus</a>
+</nav>
+
+<!-- ══════════════════════════════════
+     CAP 1: VARIABILE GLOBALE
+══════════════════════════════════ -->
+<div class="chap" id="c1"><div class="cl forest"></div><span class="chap-lbl forest">🌲 Capitolul I · Variabile Globale</span><div class="cl forest rev"></div></div>
+
+<div class="scard">
+  <div class="scard-hdr"><span class="scard-ico">🏰</span><div><div class="scard-title">Decretul Reginei Zânelor</div><div class="scard-sub">Variabilele globale trăiesc peste tot</div></div><span class="badge bl">Lecție</span></div>
+  <div class="lore"><span class="nar">🧚 ZÂNA CODIȚA SPUNE:</span>Regina Zânelor a proclamat un decret pentru toată Pădurea Fermecată: „Numele meu este Lumina și puterea mea este 100!" Acest decret — variabila globală — este cunoscut de toată lumea din pădure, de orice funcție-copac și orice casă-funcție. Oricine poate <em>citi</em> acest decret!</div>
+  <div class="theory">
+    <h4>✦ Reguli ale Variabilelor Globale</h4>
+    <ul>
+      <li><strong>Se definesc în afara</strong> oricărei funcții — la nivelul principal al programului</li>
+      <li><strong>Sunt accesibile</strong> (de citit) din orice funcție</li>
+      <li>Dacă vrei să le <strong>modifici</strong> dintr-o funcție, trebuie cuvântul magic <code>global</code></li>
+      <li>Există <strong>pe tot parcursul</strong> rulării programului</li>
+    </ul>
+  </div>
+  <div class="code has-fn">
+    <div class="code-fn">variabile_globale.py</div>
+<span class="glob">nama_reginei</span> = <span class="str">"Lumina"</span>    <span class="cmt"># variabilă GLOBALĂ 🏰</span>
+<span class="glob">putere</span> = <span class="num">100</span>                 <span class="cmt"># variabilă GLOBALĂ 🏰</span>
+
+<span class="kw">def</span> <span class="fn">saluta_regina</span>():
+    <span class="cmt"># Putem CITI variabila globală din funcție:</span>
+    <span class="fn">print</span>(<span class="str">"Bună ziua, Regina"</span>, <span class="glob">nama_reginei</span>)
+    <span class="fn">print</span>(<span class="str">"Puterea ei:"</span>, <span class="glob">putere</span>)
+
+<span class="kw">def</span> <span class="fn">anunta_padurea</span>():
+    <span class="fn">print</span>(<span class="glob">nama_reginei</span>, <span class="str">"conduce pădurea!"</span>)
+
+<span class="fn">saluta_regina</span>()       <span class="cmt"># → Bună ziua, Regina Lumina</span>
+<span class="fn">anunta_padurea</span>()      <span class="cmt"># → Lumina conduce pădurea!</span>
+  </div>
+</div>
+
+<!-- EX 1 -->
+<div class="scard gold-t">
+  <div class="scard-hdr"><span class="scard-ico">🌿</span><div><div class="scard-title">Exercițiu 1 – Decretul Reginei</div><div class="scard-sub">Definește și folosește o variabilă globală</div></div><span class="badge be">EX 1/12</span></div>
+  <div class="lore gold"><span class="nar">🧚 SARCINA:</span>Completează codul — definește variabila globală a reginei și citește-o din ambele funcții!</div>
+  <div class="bex gold-bex">
+    <div class="ext">🏰 Decretul Reginei</div>
+    <div class="ca">
+<span class="cmt"># Variabilă GLOBALĂ (decretul reginei):</span><br>
+<input class="blank" id="e1b1" placeholder="???" maxlength="12"> = <span class="str">"Cristal"</span><br><br>
+<span class="kw">def</span> <span class="fn">zana_nordului</span>():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">print</span>(<span class="str">"Salut de la:"</span>, <input class="blank" id="e1b2" placeholder="???" maxlength="12">)<br><br>
+<span class="kw">def</span> <span class="fn">zana_sudului</span>():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">print</span>(<span class="str">"Și eu știu:"</span>, <input class="blank" id="e1b3" placeholder="???" maxlength="12">)<br><br>
+zana_nordului()<br>
+zana_sudului()
+    </div>
+    <div class="bgrp"><button class="btn btn-gold" onclick="checkEx(1)">✨ Verifică Vraja!</button><button class="btn btn-ghost" onclick="resetEx(1)">↺ Resetează</button></div>
+    <div class="fb" id="fb1"></div>
+  </div>
+  <div class="hint">🔮 Indiciu: numele variabilei globale este același în toate trei locurile</div>
+</div>
+
+<!-- EX 2 -->
+<div class="scard gold-t">
+  <div class="scard-hdr"><span class="scard-ico">👑</span><div><div class="scard-title">Exercițiu 2 – Modifică cu global!</div><div class="scard-sub">Cuvântul magic <code>global</code></div></div><span class="badge be">EX 2/12</span></div>
+  <div class="lore gold"><span class="nar">🧚 ZÂNA CODIȚA:</span>Dacă o zână din casă-funcție vrea să <em>schimbe</em> decretul Reginei, trebuie să spună cuvântul magic <code>global</code> mai întâi — altfel va crea propriul ei decret local, fără să îl atingă pe al Reginei!</div>
+  <div class="bex gold-bex">
+    <div class="ext">👑 Cuvântul magic global</div>
+    <div class="ca">
+putere_magica = <span class="num">50</span>  <span class="cmt"># variabilă globală</span><br><br>
+<span class="kw">def</span> <span class="fn">creste_puterea</span>():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw"><input class="blank" id="e2b1" placeholder="???" maxlength="8"></span> putere_magica  <span class="cmt"># anunțăm că modificăm globalul!</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;putere_magica <input class="blank" id="e2b2" placeholder="???" maxlength="3"> <span class="num">30</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">print</span>(<span class="str">"Puterea acum:"</span>, putere_magica)<br><br>
+creste_puterea()   <span class="cmt"># → Puterea acum: 80</span><br>
+<span class="fn">print</span>(<span class="str">"Global:"</span>, <input class="blank" id="e2b3" placeholder="???" maxlength="14">)  <span class="cmt"># → Global: 80</span>
+    </div>
+    <div class="bgrp"><button class="btn btn-gold" onclick="checkEx(2)">✨ Verifică Vraja!</button><button class="btn btn-ghost" onclick="resetEx(2)">↺ Resetează</button></div>
+    <div class="fb" id="fb2"></div>
+  </div>
+  <div class="hint">🔮 Indicii: <code>global</code> · <code>+=</code> · <code>putere_magica</code></div>
+</div>
+
+<!-- T/F 1 -->
+<div class="scard">
+  <div class="scard-hdr"><span class="scard-ico">🍄</span><div><div class="scard-title">Adevărat sau Fals? – Variabile Globale</div><div class="scard-sub">4 întrebări · 0.5 XP fiecare</div></div><span class="badge bl">Teorie</span></div>
+  <div class="tf-grid" id="tfGrid1"></div>
+</div>
+
+<!-- ══════════════════════════════════
+     CAP 2: VARIABILE LOCALE
+══════════════════════════════════ -->
+<div class="chap" id="c2"><div class="cl gold"></div><span class="chap-lbl gold">🍄 Capitolul II · Variabile Locale</span><div class="cl gold rev"></div></div>
+
+<div class="scard rose-t">
+  <div class="scard-hdr"><span class="scard-ico">🏠</span><div><div class="scard-title">Secretele din Căsuța Ciupercii</div><div class="scard-sub">Variabilele locale trăiesc DOAR înăuntru</div></div><span class="badge bg">Lecție</span></div>
+  <div class="lore rose"><span class="nar">🧚 ZÂNA CODIȚA:</span>Fiecare funcție-căsuță are propriile ei secrete — variabile locale. Acestea se nasc când funcția pornește și dispar ca fumul de vrajă când funcția se termină. Nimeni din afara căsuței nu le poate vedea sau atinge!</div>
+  <div class="theory">
+    <h4>✦ Reguli ale Variabilelor Locale</h4>
+    <ul>
+      <li><strong>Se definesc înăuntrul</strong> unei funcții</li>
+      <li><strong>Există DOAR</strong> cât timp funcția rulează</li>
+      <li><strong>Dispar</strong> complet când funcția se termină</li>
+      <li><strong>Nu pot fi accesate</strong> din afara funcției — NameError!</li>
+      <li>Pot avea <strong>același nume</strong> ca o variabilă globală — dar sunt <em>diferite</em>!</li>
+    </ul>
+  </div>
+  <div class="code has-fn">
+    <div class="code-fn">variabile_locale.py</div>
+<span class="glob">aroma_padurii</span> = <span class="str">"pin"</span>    <span class="cmt"># GLOBALĂ — toată lumea știe</span>
+
+<span class="kw">def</span> <span class="fn">magia_ciupercii</span>():
+    <span class="loc">secretul</span> = <span class="str">"rețeta de filtru"</span>  <span class="cmt"># LOCALĂ — secret!</span>
+    <span class="loc">cristale</span> = <span class="num">7</span>                 <span class="cmt"># LOCALĂ — secret!</span>
+    <span class="fn">print</span>(<span class="str">"Înăuntru știu secretul:"</span>, <span class="loc">secretul</span>)
+    <span class="fn">print</span>(<span class="str">"Și aroma globală:"</span>, <span class="glob">aroma_padurii</span>)
+
+<span class="fn">magia_ciupercii</span>()
+
+<span class="cmt"># Încearcă să accesezi localul din afară:</span>
+<span class="cmt"># print(secretul)  ← NameError! 💥 Nu există!</span>
+<span class="cmt"># print(cristale)  ← NameError! 💥 A dispărut!</span>
+  </div>
+
+  <div class="scope-diagram">
+    <div class="scope-global">
+      <div class="scope-title forest">🌲 Spațiul Global (Toată Pădurea)</div>
+      <div class="scope-var gv"><span>🏰</span> <code>aroma_padurii = "pin"</code></div>
+      <div style="font-size:.75rem;color:var(--muted);margin-top:.5rem;">Accesibil ORIUNDE în program</div>
+    </div>
+    <div class="scope-local">
+      <div class="scope-title gold">🍄 Spațiu Local (Căsuța Funcției)</div>
+      <div class="scope-var lv"><span>🔐</span> <code>secretul = "rețeta"</code></div>
+      <div class="scope-var lv"><span>🔐</span> <code>cristale = 7</code></div>
+      <div class="scope-var lv gone"><span>💨</span> <code>... dispar la final ...</code></div>
+      <div style="font-size:.75rem;color:var(--muted);margin-top:.5rem;">Există DOAR înăuntrul funcției</div>
+    </div>
+  </div>
+</div>
+
+<!-- EX 3 -->
+<div class="scard rose-t">
+  <div class="scard-hdr"><span class="scard-ico">🔐</span><div><div class="scard-title">Exercițiu 3 – Secretele Ciupercii</div><div class="scard-sub">Definește variabile locale</div></div><span class="badge bg">EX 3/12</span></div>
+  <div class="bex rose-bex">
+    <div class="ext">🍄 Variabile Locale</div>
+    <div class="ca">
+<span class="kw">def</span> <span class="fn">reteta_filtru</span>():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># Definește variabile LOCALE:</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<input class="blank" id="e3b1" placeholder="???" maxlength="12"> = <span class="str">"picături de rouă"</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;cantitate = <input class="blank" id="e3b2" placeholder="???" maxlength="3"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">print</span>(<span class="fn">f</span><span class="str">"Ingredientul secret: {ingredientul}"</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">print</span>(<span class="fn">f</span><span class="str">"Cantitate: {cantitate} picături"</span>)<br><br>
+reteta_filtru()
+    </div>
+    <div class="bgrp"><button class="btn btn-rose" onclick="checkEx(3)">🌸 Verifică!</button><button class="btn btn-ghost" onclick="resetEx(3)">↺ Resetează</button></div>
+    <div class="fb" id="fb3"></div>
+  </div>
+  <div class="hint">🔮 Indicii: <code>ingredientul</code> · <code>3</code> (sau orice număr)</div>
+</div>
+
+<!-- EX 4 -->
+<div class="scard rose-t">
+  <div class="scard-hdr"><span class="scard-ico">🔮</span><div><div class="scard-title">Exercițiu 4 – Același Nume, Lumi Diferite!</div><div class="scard-sub">Global și local cu același nume</div></div><span class="badge bg">EX 4/12</span></div>
+  <div class="lore rose"><span class="nar">🧚 ATENȚIE!</span>O variabilă locală poate avea același nume ca una globală — dar ele sunt <strong>complet separate</strong>, ca două zâne cu același prenume care trăiesc în păduri diferite!</div>
+  <div class="bex rose-bex">
+    <div class="ext">🔮 Nume identic, lumi diferite</div>
+    <div class="ca">
+magie = <span class="str">"vraja globală"</span>   <span class="cmt"># GLOBALĂ</span><br><br>
+<span class="kw">def</span> <span class="fn">casuta_zanei</span>():<br>
+&nbsp;&nbsp;&nbsp;&nbsp;magie = <span class="str">"<input class="blank" id="e4b1" placeholder="???" maxlength="15">"</span>  <span class="cmt"># LOCALĂ — alta!</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">print</span>(<span class="str">"Înăuntru:"</span>, <input class="blank" id="e4b2" placeholder="???" maxlength="6">)<br><br>
+casuta_zanei()       <span class="cmt"># → Înăuntru: vraja locală</span><br>
+<span class="fn">print</span>(<span class="str">"Afară:"</span>, <input class="blank" id="e4b3" placeholder="???" maxlength="6">)   <span class="cmt"># → Afară: vraja globală</span>
+    </div>
+    <div class="bgrp"><button class="btn btn-rose" onclick="checkEx(4)">🌸 Verifică!</button><button class="btn btn-ghost" onclick="resetEx(4)">↺ Resetează</button></div>
+    <div class="fb" id="fb4"></div>
+  </div>
+  <div class="hint">🔮 Indicii: orice text · <code>magie</code> (local) · <code>magie</code> (global)</div>
+</div>
+
+<!-- T/F 2 -->
+<div class="scard rose-t">
+  <div class="scard-hdr"><span class="scard-ico">🦋</span><div><div class="scard-title">Adevărat sau Fals? – Variabile Locale</div><div class="scard-sub">4 întrebări · 0.5 XP fiecare</div></div><span class="badge bg">Teorie</span></div>
+  <div class="tf-grid" id="tfGrid2"></div>
+</div>
+
+<!-- QUIZ 1 -->
+<div class="scard">
+  <div class="scard-hdr"><span class="scard-ico">🍀</span><div><div class="scard-title">Quiz I – Global vs Local</div><div class="scard-sub">6 întrebări · 1 XP fiecare</div></div><span class="badge be">Quiz</span></div>
+
+  <div class="qcard"><div class="qnum">Întrebarea I</div><div class="qq">O variabilă definită în afara oricărei funcții este:</div><div class="qopts"><button class="qopt" onclick="qans(1,'w',this)">Locală</button><button class="qopt" onclick="qans(1,'c',this)">Globală</button><button class="qopt" onclick="qans(1,'w',this)">Secretă</button><button class="qopt" onclick="qans(1,'w',this)">Temporară</button></div><div class="fb" id="qfb1"></div></div>
+
+  <div class="qcard"><div class="qnum">Întrebarea II</div><div class="qq">Ce se întâmplă cu o variabilă locală după ce funcția se termină?</div><div class="qopts"><button class="qopt" onclick="qans(2,'w',this)">Devine globală</button><button class="qopt" onclick="qans(2,'c',this)">Dispare complet din memorie</button><button class="qopt" onclick="qans(2,'w',this)">Se salvează automat</button><button class="qopt" onclick="qans(2,'w',this)">Rămâne disponibilă</button></div><div class="fb" id="qfb2"></div></div>
+
+  <div class="qcard"><div class="qnum">Întrebarea III</div><div class="qq">Ce keyword folosim pentru a modifica o variabilă globală din interiorul unei funcții?</div><div class="qopts"><button class="qopt" onclick="qans(3,'w',this)">extern</button><button class="qopt" onclick="qans(3,'w',this)">public</button><button class="qopt" onclick="qans(3,'c',this)">global</button><button class="qopt" onclick="qans(3,'w',this)">shared</button></div><div class="fb" id="qfb3"></div></div>
+
+  <div class="qcard rose-q"><div class="qnum">Întrebarea IV</div><div class="qq">Dacă o funcție are o variabilă locală cu același nume ca una globală, care este afișată în funcție?</div><div class="qopts"><button class="qopt" onclick="qans(4,'c',this)">Cea locală (are prioritate)</button><button class="qopt" onclick="qans(4,'w',this)">Cea globală</button><button class="qopt" onclick="qans(4,'w',this)">Apare o eroare</button><button class="qopt" onclick="qans(4,'w',this)">Ambele</button></div><div class="fb" id="qfb4"></div></div>
+
+  <div class="qcard rose-q"><div class="qnum">Întrebarea V</div><div class="qq">Ce eroare apare dacă accesăm o variabilă locală din afara funcției?</div><div class="qopts"><button class="qopt" onclick="qans(5,'w',this)">TypeError</button><button class="qopt" onclick="qans(5,'c',this)">NameError</button><button class="qopt" onclick="qans(5,'w',this)">ValueError</button><button class="qopt" onclick="qans(5,'w',this)">LocalError</button></div><div class="fb" id="qfb5"></div></div>
+
+  <div class="qcard rose-q"><div class="qnum">Întrebarea VI</div><div class="qq">O funcție poate <em>citi</em> (nu modifica) o variabilă globală fără cuvântul <code>global</code>?</div><div class="qopts"><button class="qopt" onclick="qans(6,'c',this)">Da — citirea e liberă</button><button class="qopt" onclick="qans(6,'w',this)">Nu — trebuie global mereu</button><button class="qopt" onclick="qans(6,'w',this)">Da — dar dă warning</button><button class="qopt" onclick="qans(6,'w',this)">Depinde de sistem</button></div><div class="fb" id="qfb6"></div></div>
+</div>
+
+<!-- ══════════════════════════════════
+     CAP 4: PARAMETRI
+══════════════════════════════════ -->
+<div class="chap" id="c4"><div class="cl rose"></div><span class="chap-lbl rose">🌸 Capitolul III · Parametrii Funcției</span><div class="cl rose rev"></div></div>
+
+<div class="scard vio-t">
+  <div class="scard-hdr"><span class="scard-ico">🪄</span><div><div class="scard-title">Ingredientele Magice ale Vrăjii</div><div class="scard-sub">Parametri = ce aduci când intri într-o funcție</div></div><span class="badge bq">Lecție</span></div>
+  <div class="lore violet"><span class="nar">🧚 ZÂNA CODIȚA:</span>Când o zână intră în Camera Vrajilor, aduce cu ea ingrediente speciale — acestea se numesc <strong>parametri</strong>. Camera (funcția) le primește, le folosește în vrajă, dar ele aparțin doar acelei vizite. Fiecare zână poate aduce ingrediente diferite!</div>
+
+  <div class="param-diagram">
+    <div style="font-family:'Cinzel Decorative',serif;font-size:.65rem;color:var(--muted);margin-bottom:.8rem;font-weight:700;">Anatomia funcției cu parametri:</div>
+    <div class="pd-row">
+      <span class="pd-label">Definiție:</span>
+      <div class="pd-box fn">def face_filtru</div>
+      <div class="pd-box par">( planta, cantitate )</div>
+      <span style="font-family:'Courier New',monospace;">:</span>
+    </div>
+    <div class="pd-row" style="margin-top:.6rem;">
+      <span class="pd-label">Apel:</span>
+      <div class="pd-box fn">face_filtru</div>
+      <div class="pd-box arg">( "levănțică", 3 )</div>
+      <div class="pd-arrow">→ planta="levănțică", cantitate=3</div>
+    </div>
+    <div style="margin-top:.6rem;font-size:.78rem;color:var(--muted);font-weight:600;">🌸 <strong>Parametru</strong> = variabila din definiție &nbsp;|&nbsp; 💎 <strong>Argument</strong> = valoarea dată la apel</div>
+  </div>
+
+  <div class="code has-fn">
+    <div class="code-fn">parametri_functii.py</div>
+<span class="kw">def</span> <span class="fn">face_filtru</span>(<span class="param">planta</span>, <span class="param">cantitate</span>):    <span class="cmt"># planta și cantitate = PARAMETRI</span>
+    <span class="fn">print</span>(<span class="fn">f</span><span class="str">"🌿 Filtru din {planta}, {cantitate} lingurițe"</span>)
+    <span class="fn">print</span>(<span class="str">"✨ Vraja este gata!"</span>)
+
+<span class="cmt"># Apelăm cu argumente diferite:</span>
+<span class="fn">face_filtru</span>(<span class="str">"lavandă"</span>, <span class="num">2</span>)     <span class="cmt"># → Filtru din lavandă, 2 lingurițe</span>
+<span class="fn">face_filtru</span>(<span class="str">"mușețel"</span>, <span class="num">5</span>)     <span class="cmt"># → Filtru din mușețel, 5 lingurițe</span>
+<span class="fn">face_filtru</span>(<span class="str">"mentă"</span>, <span class="num">1</span>)       <span class="cmt"># → Filtru din mentă, 1 lingurițe</span>
+  </div>
+
+  <div class="callout tip">
+    <span class="callout-icon">💡</span>
+    <div class="callout-body">
+      <strong>Parametrii sunt Variabile Locale!</strong>
+      Parametrii (<code>planta</code>, <code>cantitate</code>) se comportă exact ca variabile locale — există doar în interiorul funcției, primesc valorile argumentelor și dispar când funcția se termină.
+    </div>
+  </div>
+</div>
+
+<!-- EX 5 -->
+<div class="scard vio-t">
+  <div class="scard-hdr"><span class="scard-ico">🌺</span><div><div class="scard-title">Exercițiu 5 – Camera Vrajilor</div><div class="scard-sub">Funcție cu parametri</div></div><span class="badge bq">EX 5/12</span></div>
+  <div class="bex vio-bex">
+    <div class="ext">🪄 Funcție cu parametri</div>
+    <div class="ca">
+<span class="kw">def</span> <span class="fn">salut_zana</span>(<input class="blank" id="e5b1" placeholder="???" maxlength="8">, varsta):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">print</span>(<span class="fn">f</span><span class="str">"Bună, zânița {<input class="blank" id="e5b2" placeholder="???" maxlength="6">}!"</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">print</span>(<span class="fn">f</span><span class="str">"Ai {varsta} ani și ești magică!"</span>)<br><br>
+salut_zana(<span class="str">"<input class="blank" id="e5b3" placeholder="???" maxlength="10">"</span>, <span class="num">11</span>)
+    </div>
+    <div class="bgrp"><button class="btn btn-violet" onclick="checkEx(5)">🔮 Verifică!</button><button class="btn btn-ghost" onclick="resetEx(5)">↺ Resetează</button></div>
+    <div class="fb" id="fb5"></div>
+  </div>
+  <div class="hint">🔮 Indicii: <code>nume</code> · <code>nume</code> · orice prenume</div>
+</div>
+
+<!-- EX 6 -->
+<div class="scard vio-t">
+  <div class="scard-hdr"><span class="scard-ico">💎</span><div><div class="scard-title">Exercițiu 6 – Parametri și Return</div><div class="scard-sub">Funcție care întoarce un rezultat</div></div><span class="badge bq">EX 6/12</span></div>
+  <div class="bex vio-bex">
+    <div class="ext">💎 Funcție cu return</div>
+    <div class="ca">
+<span class="kw">def</span> <span class="fn">putere_vraja</span>(cristale, stele):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;rezultat = cristale <input class="blank" id="e6b1" placeholder="???" maxlength="3"> stele<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> <input class="blank" id="e6b2" placeholder="???" maxlength="10"><br><br>
+<span class="cmt"># Calculăm puterea:</span><br>
+putere = putere_vraja(<span class="num">7</span>, <input class="blank" id="e6b3" placeholder="???" maxlength="3">)<br>
+<span class="fn">print</span>(<span class="str">"Puterea vrajei:"</span>, putere)  <span class="cmt"># → 35</span>
+    </div>
+    <div class="bgrp"><button class="btn btn-violet" onclick="checkEx(6)">🔮 Verifică!</button><button class="btn btn-ghost" onclick="resetEx(6)">↺ Resetează</button></div>
+    <div class="fb" id="fb6"></div>
+  </div>
+  <div class="hint">🔮 Indicii: <code>*</code> · <code>rezultat</code> · <code>5</code></div>
+</div>
+
+<!-- T/F 3 -->
+<div class="scard vio-t">
+  <div class="scard-hdr"><span class="scard-ico">🦄</span><div><div class="scard-title">Adevărat sau Fals? – Parametri</div><div class="scard-sub">4 întrebări · 0.5 XP fiecare</div></div><span class="badge bq">Teorie</span></div>
+  <div class="tf-grid" id="tfGrid3"></div>
+</div>
+
+<!-- ══════════════════════════════════
+     CAP 5: DEFAULT PARAMETERS
+══════════════════════════════════ -->
+<div class="chap" id="c5"><div class="cl violet"></div><span class="chap-lbl violet">💜 Capitolul IV · Parametri cu Valoare Implicită</span><div class="cl violet rev"></div></div>
+
+<div class="scard sky-t">
+  <div class="scard-hdr"><span class="scard-ico">⭐</span><div><div class="scard-title">Ingrediente cu Cantitate Prestabilită</div><div class="scard-sub">Default parameters — valori standard</div></div><span class="badge bb">Lecție</span></div>
+  <div class="lore"><span class="nar">🧚 ZÂNA CODIȚA:</span>Uneori camera vrăjilor are deja pregătite cantitățile obișnuite de ingrediente! Dacă zâna nu specifică altceva, se folosesc valorile prestabilite. Acestea se numesc <strong>parametri cu valoare implicită</strong> (default parameters)!</div>
+  <div class="code has-fn">
+    <div class="code-fn">default_parameters.py</div>
+<span class="kw">def</span> <span class="fn">face_vraja</span>(<span class="param">tip</span>, <span class="param">putere</span>=<span class="num">10</span>, <span class="param">durata</span>=<span class="str">"1 oră"</span>):
+    <span class="fn">print</span>(<span class="fn">f</span><span class="str">"Vraja {tip}: putere {putere}, durată {durata}"</span>)
+
+<span class="fn">face_vraja</span>(<span class="str">"lumină"</span>)                 <span class="cmt"># → putere 10, durată 1 oră (default!)</span>
+<span class="fn">face_vraja</span>(<span class="str">"foc"</span>, <span class="num">50</span>)               <span class="cmt"># → putere 50, durată 1 oră (doar putere schimbată)</span>
+<span class="fn">face_vraja</span>(<span class="str">"gheață"</span>, <span class="num">80</span>, <span class="str">"3 ore"</span>)  <span class="cmt"># → putere 80, durată 3 ore</span>
+
+<span class="cmt"># Keyword arguments (în orice ordine!):</span>
+<span class="fn">face_vraja</span>(<span class="str">"vânt"</span>, durata=<span class="str">"30 min"</span>, putere=<span class="num">25</span>)
+  </div>
+  <div class="callout warn">
+    <span class="callout-icon">⚠️</span>
+    <div class="callout-body">
+      <strong>Regula Ordinii!</strong>
+      Parametrii cu valori implicite trebuie să vină DUPĂ parametrii fără valori implicite! <code>def f(a, b=5)</code> ✅ corect. <code>def f(b=5, a)</code> ❌ eroare de sintaxă!
+    </div>
+  </div>
+</div>
+
+<!-- EX 7 -->
+<div class="scard sky-t">
+  <div class="scard-hdr"><span class="scard-ico">⭐</span><div><div class="scard-title">Exercițiu 7 – Rețeta cu Valori Prestabilite</div><div class="scard-sub">Default parameters în acțiune</div></div><span class="badge bb">EX 7/12</span></div>
+  <div class="bex sky-bex">
+    <div class="ext">⭐ Default parameters</div>
+    <div class="ca">
+<span class="kw">def</span> <span class="fn">poțiune_magica</span>(culoare, efect<input class="blank" id="e7b1" placeholder="????" maxlength="15">, durata=<span class="str">"1 zi"</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">print</span>(<span class="fn">f</span><span class="str">"Poțiune {culoare}: {efect}, durată {durata}"</span>)<br><br>
+<span class="cmt"># Apel cu doar culoarea (celelalte = default):</span><br>
+potiune_magica(<span class="str">"albastră"</span><input class="blank" id="e7b2" placeholder="????" maxlength="3">)<br><br>
+<span class="cmt"># Apel cu toate valorile specificate:</span><br>
+potiune_magica(<span class="str">"roșie"</span>, <span class="str">"viteza"</span>, <input class="blank" id="e7b3" placeholder="????" maxlength="10">)
+    </div>
+    <div class="bgrp"><button class="btn btn-sky" onclick="checkEx(7)">💙 Verifică!</button><button class="btn btn-ghost" onclick="resetEx(7)">↺ Resetează</button></div>
+    <div class="fb" id="fb7"></div>
+  </div>
+  <div class="hint">🔮 Indicii: <code>="zbor"</code> (sau alt efect) · nimic după "albastră" · <code>"3 zile"</code></div>
+</div>
+
+<!-- EX 8 -->
+<div class="scard sky-t">
+  <div class="scard-hdr"><span class="scard-ico">🌙</span><div><div class="scard-title">Exercițiu 8 – Keyword Arguments</div><div class="scard-sub">Specifică argumentele după nume</div></div><span class="badge bb">EX 8/12</span></div>
+  <div class="bex sky-bex">
+    <div class="ext">🌙 Keyword arguments</div>
+    <div class="ca">
+<span class="kw">def</span> <span class="fn">descanta</span>(zana, vraja=<span class="str">"lumina"</span>, cristale=<span class="num">3</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">print</span>(<span class="fn">f</span><span class="str">"{zana} folosește {vraja} cu {cristale} cristale"</span>)<br><br>
+<span class="cmt"># Cu keyword arguments (în orice ordine!):</span><br>
+descanta(<span class="str">"Aria"</span>, <input class="blank" id="e8b1" placeholder="????" maxlength="12">=<span class="num">7</span>, <input class="blank" id="e8b2" placeholder="????" maxlength="8">=<span class="str">"foc"</span>)<br><br>
+<span class="cmt"># Doar zana (celelalte = default):</span><br>
+descanta(<input class="blank" id="e8b3" placeholder="????" maxlength="10">=<span class="str">"Luna"</span>)
+    </div>
+    <div class="bgrp"><button class="btn btn-sky" onclick="checkEx(8)">💙 Verifică!</button><button class="btn btn-ghost" onclick="resetEx(8)">↺ Resetează</button></div>
+    <div class="fb" id="fb8"></div>
+  </div>
+  <div class="hint">🔮 Indicii: <code>cristale</code> · <code>vraja</code> · <code>zana</code></div>
+</div>
+
+<!-- QUIZ 2 -->
+<div class="scard gold-t">
+  <div class="scard-hdr"><span class="scard-ico">🌟</span><div><div class="scard-title">Quiz II – Parametri și Default</div><div class="scard-sub">6 întrebări · 1 XP fiecare</div></div><span class="badge be">Quiz</span></div>
+
+  <div class="qcard vio-q"><div class="qnum">Întrebarea VII</div><div class="qq">Ce sunt parametrii funcției?</div><div class="qopts"><button class="qopt" onclick="qans(7,'w',this)">Variabile globale speciale</button><button class="qopt" onclick="qans(7,'c',this)">Variabile locale primite la apelul funcției</button><button class="qopt" onclick="qans(7,'w',this)">Funcții înăuntrul altor funcții</button><button class="qopt" onclick="qans(7,'w',this)">Valori returnate de funcție</button></div><div class="fb" id="qfb7"></div></div>
+
+  <div class="qcard vio-q"><div class="qnum">Întrebarea VIII</div><div class="qq">Care este sintaxa corectă pentru un parametru cu valoare implicită?</div><div class="qopts"><button class="qopt" onclick="qans(8,'c',this)">def f(a, b=5):</button><button class="qopt" onclick="qans(8,'w',this)">def f(a, b==5):</button><button class="qopt" onclick="qans(8,'w',this)">def f(a, b:5):</button><button class="qopt" onclick="qans(8,'w',this)">def f(b=5, a):</button></div><div class="fb" id="qfb8"></div></div>
+
+  <div class="qcard vio-q"><div class="qnum">Întrebarea IX</div><div class="qq">Dacă apelezi <code>def salut(nu, titlu="Zâna"):</code> cu <code>salut("Aria")</code>, care este valoarea lui <code>titlu</code>?</div><div class="qopts"><button class="qopt" onclick="qans(9,'w',this)">None</button><button class="qopt" onclick="qans(9,'w',this)">O eroare apare</button><button class="qopt" onclick="qans(9,'c',this)">"Zâna" (valoarea implicită)</button><button class="qopt" onclick="qans(9,'w',this)">"Aria"</button></div><div class="fb" id="qfb9"></div></div>
+
+  <div class="qcard sky-q"><div class="qnum">Întrebarea X</div><div class="qq">Keyword argument înseamnă:</div><div class="qopts"><button class="qopt" onclick="qans(10,'w',this)">Un parametru obligatoriu</button><button class="qopt" onclick="qans(10,'c',this)">Specificarea numelui parametrului la apel: f(b="val")</button><button class="qopt" onclick="qans(10,'w',this)">Un parametru global</button><button class="qopt" onclick="qans(10,'w',this)">O funcție în funcție</button></div><div class="fb" id="qfb10"></div></div>
+
+  <div class="qcard sky-q"><div class="qnum">Întrebarea XI</div><div class="qq">Ce afișează: <code>def f(x, y=2): return x*y</code> dacă apelăm <code>print(f(4))</code>?</div><div class="qopts"><button class="qopt" onclick="qans(11,'w',this)">4</button><button class="qopt" onclick="qans(11,'c',this)">8</button><button class="qopt" onclick="qans(11,'w',this)">6</button><button class="qopt" onclick="qans(11,'w',this)">Eroare</button></div><div class="fb" id="qfb11"></div></div>
+
+  <div class="qcard sky-q"><div class="qnum">Întrebarea XII</div><div class="qq">Care este diferența dintre <strong>parametru</strong> și <strong>argument</strong>?</div><div class="qopts"><button class="qopt" onclick="qans(12,'w',this)">Nu există diferență</button><button class="qopt" onclick="qans(12,'c',this)">Parametrul e în definiție; argumentul e valoarea dată la apel</button><button class="qopt" onclick="qans(12,'w',this)">Argumentul e în definiție; parametrul e la apel</button><button class="qopt" onclick="qans(12,'w',this)">Parametrul este mereu global</button></div><div class="fb" id="qfb12"></div></div>
+</div>
+
+<!-- ══════════════════════════════════
+     CAP 6: *args
+══════════════════════════════════ -->
+<div class="chap" id="c6"><div class="cl forest"></div><span class="chap-lbl forest">🌌 Capitolul V · *args – Magia Nelimitată</span><div class="cl forest rev"></div></div>
+
+<div class="scard">
+  <div class="scard-hdr"><span class="scard-ico">🌌</span><div><div class="scard-title">Geanta Magică — Oricâte Ingrediente!</div><div class="scard-sub">*args — număr variabil de argumente</div></div><span class="badge bl">Lecție</span></div>
+  <div class="lore"><span class="nar">🧚 ZÂNA CODIȚA:</span>Camera Vrajilor Speciale are o geantă magică — acceptă oricâte ingrediente aduci! Poți aduce 2, poți aduce 20. <code>*args</code> colectează toate argumentele într-un tuplu.</div>
+  <div class="code">
+<span class="kw">def</span> <span class="fn">reteta_secretă</span>(*<span class="param">ingrediente</span>):
+    <span class="fn">print</span>(<span class="str">"Ingrediente aduse:"</span>, <span class="fn">len</span>(ingrediente))
+    <span class="kw">for</span> ing <span class="kw">in</span> ingrediente:
+        <span class="fn">print</span>(<span class="str">"  🌿"</span>, ing)
+
+<span class="fn">reteta_secretă</span>(<span class="str">"lavandă"</span>)
+<span class="fn">reteta_secretă</span>(<span class="str">"mentă"</span>, <span class="str">"trandafir"</span>, <span class="str">"mușețel"</span>)
+<span class="fn">reteta_secretă</span>(<span class="str">"cristal"</span>, <span class="str">"praf de stele"</span>, <span class="str">"rouă"</span>, <span class="str">"lumina lunii"</span>)
+  </div>
+</div>
+
+<!-- EX 9 -->
+<div class="scard">
+  <div class="scard-hdr"><span class="scard-ico">🎒</span><div><div class="scard-title">Exercițiu 9 – Geanta Magică cu *args</div><div class="scard-sub">Funcție cu număr variabil de argumente</div></div><span class="badge bl">EX 9/12</span></div>
+  <div class="bex">
+    <div class="ext">🎒 *args magic</div>
+    <div class="ca">
+<span class="kw">def</span> <span class="fn">colectie_cristale</span>(*<input class="blank" id="e9b1" placeholder="????" maxlength="10">):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">print</span>(<span class="str">"Ai"</span>, <span class="fn">len</span>(<input class="blank" id="e9b2" placeholder="????" maxlength="10">), <span class="str">"cristale!"</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">for</span> c <span class="kw">in</span> cristale:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">print</span>(<span class="str">"💎"</span>, c)<br><br>
+colectie_cristale(<span class="str">"safir"</span>, <span class="str">"rubin"</span>, <span class="str">"smarald"</span>)<br>
+colectie_cristale(<span class="str">"opal"</span>)
+    </div>
+    <div class="bgrp"><button class="btn btn-forest" onclick="checkEx(9)">🌲 Verifică!</button><button class="btn btn-ghost" onclick="resetEx(9)">↺ Resetează</button></div>
+    <div class="fb" id="fb9"></div>
+  </div>
+  <div class="hint">🔮 Indicii: <code>cristale</code> · <code>cristale</code></div>
+</div>
+
+<!-- EX 10 -->
+<div class="scard">
+  <div class="scard-hdr"><span class="scard-ico">🌿</span><div><div class="scard-title">Exercițiu 10 – Combinat: Global + Parametri</div><div class="scard-sub">Toate conceptele împreună</div></div><span class="badge bl">EX 10/12</span></div>
+  <div class="bex">
+    <div class="ext">🌿 Totul împreună</div>
+    <div class="ca">
+<span class="cmt"># Variabilă GLOBALĂ:</span><br>
+regatul = <span class="str">"Pădure Fermecată"</span><br><br>
+<span class="kw">def</span> <span class="fn">prezinta_zana</span>(<input class="blank" id="e10b1" placeholder="????" maxlength="6">, putere=<span class="num">100</span>):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># Citim globala (fără keyword global):</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">print</span>(<span class="fn">f</span><span class="str">"Din {<input class="blank" id="e10b2" placeholder="????" maxlength="8">}: {<input class="blank" id="e10b3" placeholder="????" maxlength="6">} cu puterea {putere}"</span>)<br><br>
+prezinta_zana(<span class="str">"Aria"</span>)<br>
+prezinta_zana(<span class="str">"Nova"</span>, <input class="blank" id="e10b4" placeholder="????" maxlength="4">)
+    </div>
+    <div class="bgrp"><button class="btn btn-forest" onclick="checkEx(10)">🌲 Verifică!</button><button class="btn btn-ghost" onclick="resetEx(10)">↺ Resetează</button></div>
+    <div class="fb" id="fb10"></div>
+  </div>
+  <div class="hint">🔮 Indicii: <code>nume</code> · <code>regatul</code> · <code>nume</code> · <code>200</code></div>
+</div>
+
+<!-- EX 11 -->
+<div class="scard gold-t">
+  <div class="scard-hdr"><span class="scard-ico">🏆</span><div><div class="scard-title">Exercițiu 11 – global în Acțiune</div><div class="scard-sub">Modifică un contor global</div></div><span class="badge be">EX 11/12</span></div>
+  <div class="bex gold-bex">
+    <div class="ext">🏆 global + counter</div>
+    <div class="ca">
+vrajuri_lansate = <span class="num">0</span>  <span class="cmt"># contor global</span><br><br>
+<span class="kw">def</span> <span class="fn">lanseaza_vraja</span>(tip_vraja):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw"><input class="blank" id="e11b1" placeholder="????" maxlength="10"></span> vrajuri_lansate<br>
+&nbsp;&nbsp;&nbsp;&nbsp;vrajuri_lansate <input class="blank" id="e11b2" placeholder="????" maxlength="3"> <span class="num">1</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">print</span>(<span class="fn">f</span><span class="str">"✨ Vraja '{tip_vraja}' lansată! Total: {vrajuri_lansate}"</span>)<br><br>
+lanseaza_vraja(<span class="str">"foc"</span>)<br>
+lanseaza_vraja(<span class="str">"gheață"</span>)<br>
+<span class="fn">print</span>(<span class="str">"Vrajuri totale:"</span>, <input class="blank" id="e11b3" placeholder="????" maxlength="16">)
+    </div>
+    <div class="bgrp"><button class="btn btn-gold" onclick="checkEx(11)">✨ Verifică!</button><button class="btn btn-ghost" onclick="resetEx(11)">↺ Resetează</button></div>
+    <div class="fb" id="fb11"></div>
+  </div>
+  <div class="hint">🔮 Indicii: <code>global</code> · <code>+=</code> · <code>vrajuri_lansate</code></div>
+</div>
+
+<!-- EX 12 -->
+<div class="scard rose-t">
+  <div class="scard-hdr"><span class="scard-ico">🐉</span><div><div class="scard-title">Exercițiu 12 – BOSS FINAL! 🐉</div><div class="scard-sub">Totul împreună: global, local, parametri, default, *args</div></div><span class="badge bx">BOSS</span></div>
+  <div class="lore rose"><span class="nar">🧚 ULTIMA PROVOCARE:</span>Ultimul test al Pădurii Fermecate! Combini tot ce ai învățat!</div>
+  <div class="bex rose-bex">
+    <div class="ext">🐉 BOSS FINAL</div>
+    <div class="ca">
+total_magie = <span class="num">0</span>   <span class="cmt"># globală</span><br><br>
+<span class="kw">def</span> <span class="fn">ritual_magic</span>(<input class="blank" id="e12b1" placeholder="????" maxlength="6">, putere=<span class="num">10</span>, *<input class="blank" id="e12b2" placeholder="????" maxlength="12">):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">global</span> total_magie<br>
+&nbsp;&nbsp;&nbsp;&nbsp;total_magie += <input class="blank" id="e12b3" placeholder="????" maxlength="8"><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">print</span>(<span class="fn">f</span><span class="str">"Ritual '{zana}': putere {putere}"</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">for</span> ing <span class="kw">in</span> ingrediente:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="fn">print</span>(<span class="str">"  🌿"</span>, ing)<br><br>
+ritual_magic(<span class="str">"Aria"</span>, <span class="num">50</span>, <span class="str">"cristal"</span>, <span class="str">"rouă"</span>)<br>
+<span class="fn">print</span>(<span class="str">"Magie totală:"</span>, total_magie)
+    </div>
+    <div class="bgrp"><button class="btn btn-rose" onclick="checkEx(12)">🐉 Înfrânge Boss-ul!</button><button class="btn btn-ghost" onclick="resetEx(12)">↺ Resetează</button></div>
+    <div class="fb" id="fb12"></div>
+  </div>
+  <div class="hint">🔮 Indicii: <code>zana</code> · <code>ingrediente</code> · <code>putere</code></div>
+</div>
+
+<!-- ══ BONUS GAMES ══ -->
+<div class="chap" id="c7"><div class="cl gold"></div><span class="chap-lbl gold">🎁 Jocuri Bonus</span><div class="cl gold rev"></div></div>
+
+<!-- MATCH -->
+<div class="scard vio-t">
+  <div class="scard-hdr"><span class="scard-ico">🌸</span><div><div class="scard-title">Jocul Florilor Fermecate – Potrivește!</div><div class="scard-sub">Concepte ↔ Explicații · +1 XP</div></div><span class="badge bq">Bonus</span></div>
+  <div class="match-box">
+    <h3>🌺 Grădina Cunoașterii</h3>
+    <p>Apasă un concept, apoi explicația potrivită. Potrivește toate 9 florile pentru XP bonus!</p>
+    <div class="match-cols">
+      <div class="mcol"><div class="mlbl">Concepte</div>
+        <div class="mi" id="mc0" onclick="matchLeft(0,'global_var')">Variabilă Globală</div>
+        <div class="mi" id="mc1" onclick="matchLeft(1,'local_var')">Variabilă Locală</div>
+        <div class="mi" id="mc2" onclick="matchLeft(2,'global_kw')">Cuvântul global</div>
+        <div class="mi" id="mc3" onclick="matchLeft(3,'param')">Parametru</div>
+        <div class="mi" id="mc4" onclick="matchLeft(4,'argument')">Argument</div>
+        <div class="mi" id="mc5" onclick="matchLeft(5,'default')">Valoare implicită</div>
+        <div class="mi" id="mc6" onclick="matchLeft(6,'args')">*args</div>
+        <div class="mi" id="mc7" onclick="matchLeft(7,'return')">return</div>
+        <div class="mi" id="mc8" onclick="matchLeft(8,'nameerror')">NameError</div>
+      </div>
+      <div class="mcol"><div class="mlbl">Explicații</div>
+        <div class="mi" id="md0" onclick="matchRight('args')">Acceptă oricâte argumente într-un tuplu</div>
+        <div class="mi" id="md1" onclick="matchRight('default')">Valoare folosită dacă nu se dă un argument</div>
+        <div class="mi" id="md2" onclick="matchRight('global_var')">Trăiește în tot programul, accesibilă oriunde</div>
+        <div class="mi" id="md3" onclick="matchRight('nameerror')">Eroare când accesezi variabila locală din afară</div>
+        <div class="mi" id="md4" onclick="matchRight('param')">Variabila din definiția funcției</div>
+        <div class="mi" id="md5" onclick="matchRight('return')">Trimite un rezultat înapoi din funcție</div>
+        <div class="mi" id="md6" onclick="matchRight('local_var')">Trăiește doar în funcție și dispare după</div>
+        <div class="mi" id="md7" onclick="matchRight('argument')">Valoarea concretă dată la apelul funcției</div>
+        <div class="mi" id="md8" onclick="matchRight('global_kw')">Permite modificarea variabilei globale din funcție</div>
+      </div>
+    </div>
+    <div class="mres" id="matchResult">✨ Selectează un concept și o explicație...</div>
+  </div>
+</div>
+
+<!-- ORDER -->
+<div class="scard gold-t">
+  <div class="scard-hdr"><span class="scard-ico">🔀</span><div><div class="scard-title">Codul Amestecat de Zâna Espiègle! 🔀</div><div class="scard-sub">Drag & drop · +1 XP</div></div><span class="badge be">Bonus</span></div>
+  <div class="lore gold"><span class="nar">🧚 ZÂNA ESPIÈGLE:</span>O zână poznaşă a amestecat liniile de cod! Rearanjează-le în ordinea corectă!</div>
+  <div class="ogame">
+    <div class="otitle">🔀 Trage și Aranjează Codul!</div>
+    <div class="olist" id="orderList"></div>
+    <div class="bgrp" style="margin-top:1rem;">
+      <button class="btn btn-gold" onclick="checkOrder()">✨ Verifică Ordinea!</button>
+      <button class="btn btn-ghost" onclick="shuffleOrder()">🔀 Amestecă din nou</button>
+    </div>
+    <div class="fb" id="orderFb" style="margin-top:.8rem;"></div>
+  </div>
+</div>
+
+<!-- COMPLETION -->
+<div class="compl" id="completion">
+  <span class="big">🧚</span>
+  <h2>Pădure Stăpânită!</h2>
+  <div style="font-size:2.5rem;margin:1rem 0;letter-spacing:4px;">✦ ✦ ✦ ✦ ✦</div>
+  <p>Felicitări, Micuța Vrăjitoare!<br><br>
+  Ai stăpânit toate secretele Pădurii Fermecate:<br>
+  🌲 Variabile Globale · 🍄 Variabile Locale<br>
+  🌸 Parametri · ⭐ Default Parameters · 🌌 *args<br><br>
+  <em>„Magia cea mai puternică este cunoașterea!"</em></p>
+  <div style="margin-top:2rem;"><button class="btn btn-forest" onclick="window.scrollTo({top:0,behavior:'smooth'})">🌲 Înapoi în Pădure</button></div>
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+// ── FIREFLIES ──
+(function() {
+  const ff = document.getElementById('fireflies');
+  for (let i = 0; i < 24; i++) {
+    const el = document.createElement('div');
+    el.className = 'ff';
+    const sz = 3 + Math.random() * 4;
+    const tx  = (Math.random() * 200 - 100) + 'px';
+    const ty  = (Math.random() * -200 - 50) + 'px';
+    const tx2 = (Math.random() * 200 - 100) + 'px';
+    const ty2 = (Math.random() * -300 - 100) + 'px';
+    el.style.cssText = `
+      width:${sz}px;height:${sz}px;
+      left:${Math.random()*100}%;
+      top:${20+Math.random()*80}%;
+      --tx:${tx};--ty:${ty};--tx2:${tx2};--ty2:${ty2};
+      animation-duration:${6+Math.random()*12}s;
+      animation-delay:${Math.random()*10}s;
+    `;
+    ff.appendChild(el);
+  }
+})();
+
+// ── XP ──
+let xp = 0; const MAX = 30;
+const RANKS = [
+  {min:0,  l:'🌱 Novice'},
+  {min:5,  l:'🍄 Apprentice'},
+  {min:10, l:'🌿 Magician'},
+  {min:18, l:'🌺 Enchantress'},
+  {min:25, l:'🧚 Fairy Queen'}
+];
+let exC=0,tfC=0,qzC=0,bonC=0;
+let exD={},tfA={1:{},2:{},3:{}},qzD={},bonD={};
+
+function addXP(n,el){
+  xp=Math.min(xp+n,MAX);
+  document.getElementById('xpNum').textContent=xp;
+  document.getElementById('xpBar').style.width=(xp/MAX*100)+'%';
+  document.getElementById('progFill').style.width=(xp/MAX*100)+'%';
+  const r=RANKS.filter(r=>r.min<=xp).pop();
+  document.getElementById('rankBadge').textContent=r.l;
+  if(el)burst(el);
+  if(xp>=MAX)setTimeout(()=>{const c=document.getElementById('completion');c.classList.add('show');c.scrollIntoView({behavior:'smooth'});},900);
+}
+
+function showMagic(emoji,text){
+  const pu=document.getElementById('magicPopup');
+  document.getElementById('mpEmoji').textContent=emoji;
+  document.getElementById('mpText').textContent=text;
+  pu.classList.add('show');
+  setTimeout(()=>{pu.classList.remove('show');pu.style.display='none';setTimeout(()=>pu.style.display='',50);},2000);
+}
+
+function burst(el){
+  const rect=el.getBoundingClientRect();
+  ['🧚','✨','🌸','💎','🌿','⭐'].forEach(()=>{
+    const b=document.createElement('span');b.className='sb';
+    b.textContent=['🧚','✨','🌸','💎','🌿','⭐'][Math.floor(Math.random()*6)];
+    b.style.left=(rect.left+Math.random()*80)+'px';
+    b.style.top=(rect.top+window.scrollY)+'px';
+    document.body.appendChild(b);setTimeout(()=>b.remove(),1300);
+  });
+}
+function showFB(id,ok,msg){const el=document.getElementById(id);el.className='fb show '+(ok?'ok':'err');el.innerHTML=(ok?'✅ ':'❌ ')+msg;}
+function setB(id,ok){const e=document.getElementById(id);if(e){e.className='blank '+(ok?'ok':'no');}}
+function upS(){
+  document.getElementById('scEx').textContent=exC+'/12';
+  document.getElementById('scTF').textContent=tfC+'/12';
+  document.getElementById('scQz').textContent=qzC+'/12';
+  document.getElementById('scBon').textContent=bonC+'/2';
+}
+
+// ── EXERCISES ──
+const EX={
+  1:{b:[{id:'e1b1',a:'regina'},{id:'e1b2',a:'regina'},{id:'e1b3',a:'regina'}],msg:'Bravo! Decretul Reginei răsună prin toată Pădurea! 🏰 +1 XP!'},
+  2:{b:[{id:'e2b1',a:'global'},{id:'e2b2',a:'+='},{id:'e2b3',a:'putere_magica'}],msg:'Minunat! Ai folosit cuvântul magic global! 👑 +1 XP!'},
+  3:{b:[{id:'e3b1',a:'ingredientul'},{id:'e3b2',a:'3',alt:'1234567890'}],msg:'Rețeta secretă e completă! 🔐 +1 XP!'},
+  4:{b:[{id:'e4b1',a:'vraja locală',alt:''},{id:'e4b2',a:'magie'},{id:'e4b3',a:'magie'}],msg:'Ai înțeles diferența! Lumi paralele! 🔮 +1 XP!'},
+  5:{b:[{id:'e5b1',a:'nume'},{id:'e5b2',a:'nume'},{id:'e5b3',a:'',alt:'ANY'}],msg:'Salut trimis! Parametrii funcționează! 🌺 +1 XP!'},
+  6:{b:[{id:'e6b1',a:'*'},{id:'e6b2',a:'rezultat'},{id:'e6b3',a:'5'}],msg:'Puterea vrajei calculată! 7×5=35! 💎 +1 XP!'},
+  7:{b:[{id:'e7b1',a:'="zbor"',alt:''},
+       {id:'e7b2',a:''},
+       {id:'e7b3',a:'',alt:'ANY'}],msg:'Valori implicite stăpânite! ⭐ +1 XP!'},
+  8:{b:[{id:'e8b1',a:'cristale'},{id:'e8b2',a:'vraja'},{id:'e8b3',a:'zana'}],msg:'Keyword arguments perfecte! 🌙 +1 XP!'},
+  9:{b:[{id:'e9b1',a:'cristale'},{id:'e9b2',a:'cristale'}],msg:'Geanta magică funcționează cu oricâte cristale! 🎒 +1 XP!'},
+  10:{b:[{id:'e10b1',a:'zana'},{id:'e10b2',a:'regatul'},{id:'e10b3',a:'zana'},{id:'e10b4',a:'200'}],msg:'Combinat perfect — global + parametri! 🌿 +1 XP!'},
+  11:{b:[{id:'e11b1',a:'global'},{id:'e11b2',a:'+='},{id:'e11b3',a:'vrajuri_lansate'}],msg:'Contorul global funcționează! Vrajuri numărate! 🏆 +1 XP!'},
+  12:{b:[{id:'e12b1',a:'zana'},{id:'e12b2',a:'ingrediente'},{id:'e12b3',a:'putere'}],msg:'BOSS ÎNFRÂNT! Ai stăpânit Pădurea Fermecată! 🐉 +1 XP!'}
+};
+
+function checkEx(n){
+  if(exD[n])return;
+  const data=EX[n];let allOk=true;
+  data.b.forEach(b=>{
+    const v=document.getElementById(b.id).value.trim();
+    let ok=false;
+    if(b.alt==='ANY')ok=v.length>0; // accept any non-empty
+    else if(b.alt==='')ok=v.length>=0; // accept anything including empty
+    else ok=v===b.a;
+    setB(b.id,ok);
+    if(!ok)allOk=false;
+  });
+  if(allOk){
+    exD[n]=true;exC++;
+    showFB('fb'+n,true,data.msg);
+    addXP(1,document.getElementById('fb'+n));
+    upS();
+    if(exC===6)showMagic('🌺','Jumătate din Pădure Stăpânită!');
+    if(exC===12)showMagic('🧚','Toată Magia Descoperită!');
+  } else {
+    showFB('fb'+n,false,'Nu chiar! Verifică indiciile și încearcă din nou, micuță vrăjitoare! 🌿');
+  }
+}
+function resetEx(n){EX[n].b.forEach(b=>{const e=document.getElementById(b.id);if(e){e.value='';e.className='blank';}});document.getElementById('fb'+n).className='fb';}
+
+// ── T/F ──
+const TF={
+  1:[
+    {q:'O variabilă globală poate fi citită din orice funcție fără cuvântul <code>global</code>.',ans:true,ex:'Adevărat! Citirea e liberă. Cuvântul global e necesar doar dacă vrei să o MODIFICI.'},
+    {q:'Cuvântul <code>global</code> creează o variabilă nouă în funcție.',ans:false,ex:'Fals! <code>global</code> îi spune Python-ului să folosească variabila existentă din spațiul global, nu una nouă.'},
+    {q:'O variabilă globală există pe tot parcursul rulării programului.',ans:true,ex:'Adevărat! Variabilele globale trăiesc atât timp cât programul rulează.'},
+    {q:'Fără cuvântul <code>global</code>, atribuirea <code>x = 5</code> într-o funcție modifică variabila globală x.',ans:false,ex:'Fals! Fără <code>global</code>, Python creează o variabilă LOCALĂ nouă numită x, fără să atingă globalul.'},
+  ],
+  2:[
+    {q:'O variabilă locală poate fi accesată din afara funcției în care e definită.',ans:false,ex:'Fals! Variabilele locale sunt invizibile în afara funcției lor. Accesarea lor dă NameError.'},
+    {q:'Două funcții diferite pot avea variabile locale cu același nume.',ans:true,ex:'Adevărat! Fiecare funcție are propriul spațiu de variabile. Același nume în funcții diferite = variabile complet separate.'},
+    {q:'Variabilele locale dispar din memorie după ce funcția se termină.',ans:true,ex:'Exact! Variabilele locale au aceeași „viață" ca funcția — se nasc cu ea și dispar cu ea.'},
+    {q:'O variabilă locală cu același nume ca una globală va modifica globalul.',ans:false,ex:'Fals! Ele sunt complet separate. Variabila locală are prioritate înăuntrul funcției, dar globalul rămâne neschimbat.'},
+  ],
+  3:[
+    {q:'Parametrii funcției sunt variabile locale.',ans:true,ex:'Adevărat! Parametrii se comportă exact ca variabile locale — există doar în funcție și dispar când funcția se termină.'},
+    {q:'Un parametru cu valoare implicită este obligatoriu la apelul funcției.',ans:false,ex:'Fals! Tocmai asta e frumusețea valorilor implicite — dacă nu specifici, se folosește valoarea prestabilită.'},
+    {q:'<code>def f(b=5, a):</code> este o sintaxă validă în Python.',ans:false,ex:'Fals! Parametrii cu valori implicite trebuie să vină DUPĂ cei fără valori implicite. Ordinea corectă: f(a, b=5).'},
+    {q:'<code>*args</code> permite unei funcții să primească oricâte argumente.',ans:true,ex:'Adevărat! *args colectează toate argumentele extra într-un tuplu, indiferent câte sunt.'},
+  ]
+};
+function buildTF(gid,sn){
+  const g=document.getElementById(gid);
+  TF[sn].forEach((it,ix)=>{
+    const d=document.createElement('div');d.className='tf-item';
+    d.innerHTML=`<div class="tf-q">${it.q}</div><div class="tf-btns"><button class="tf-btn tft" onclick="aTF(${sn},${ix},true,this)">✅ Adevărat</button><button class="tf-btn tff" onclick="aTF(${sn},${ix},false,this)">❌ Fals</button></div><div class="tf-fb" id="tffb${sn}_${ix}"></div>`;
+    g.appendChild(d);
+  });
+}
+function aTF(sn,ix,ua,btn){
+  if(tfA[sn][ix])return;tfA[sn][ix]=true;
+  const it=TF[sn][ix];const ok=ua===it.ans;
+  const fb=document.getElementById('tffb'+sn+'_'+ix);
+  fb.className='tf-fb show '+(ok?'ok':'err');fb.textContent=(ok?'✅ ':'❌ ')+it.ex;
+  btn.parentElement.querySelectorAll('.tf-btn').forEach(b=>b.disabled=true);
+  btn.classList.add(ok?'sok':'sno');
+  if(ok){tfC++;upS();addXP(0.5,fb);}
+}
+buildTF('tfGrid1',1);buildTF('tfGrid2',2);buildTF('tfGrid3',3);
+
+// ── QUIZ ──
+const QC={1:'c',2:'c',3:'c',4:'c',5:'c',6:'c',7:'c',8:'c',9:'c',10:'c',11:'c',12:'c'};
+const QM={
+  1:{ok:'Corect! Definită în afara funcțiilor = Globală! 🌲',bad:'Nu! Variabila definită în afara funcțiilor este globală, nu locală.'},
+  2:{ok:'Exact! Variabilele locale dispar complet din memorie! 🍄',bad:'Nu! Variabilele locale dispar — nu devin globale, nu se salvează.'},
+  3:{ok:'Bravo! <code>global</code> este cuvântul magic pentru modificarea globalelor! ✨',bad:'Nu! Cuvântul corect este <code>global</code>.'},
+  4:{ok:'Corect! Variabila locală are prioritate înăuntrul funcției! 🌸',bad:'Nu! Variabila locală are prioritate — ascunde globalul în interiorul funcției.'},
+  5:{ok:'Exact! NameError apare când accesezi o variabilă care nu există în acel context! 🌿',bad:'Nu! Eroarea este NameError — variabila nu există în spațiul curent.'},
+  6:{ok:'Bravo! Citirea variabilelor globale e liberă, fără keyword! 🎋',bad:'Nu! Citirea e liberă — global e necesar DOAR pentru modificare.'},
+  7:{ok:'Corect! Parametrii sunt variabile locale ale funcției! 🌺',bad:'Nu! Parametrii se comportă ca variabile locale — primite la apel, dispar după.'},
+  8:{ok:'Exact! <code>def f(a, b=5)</code> — defaultul vine după obligatoriu! ⭐',bad:'Nu! Sintaxa corectă: <code>def f(a, b=5):</code> — obligatoriuL e primul!'},
+  9:{ok:'Bravo! Valoarea implicită e folosită când nu dai argument! 🌙',bad:'Nu! Dacă nu specifici argumentul, Python folosește valoarea implicită (default).'},
+  10:{ok:'Corect! Keyword argument = specifici numele parametrului la apel! 💎',bad:'Nu! Keyword argument = f(param_name=valoare), poți specifica în orice ordine.'},
+  11:{ok:'Exact! 4 × 2 (default) = 8! Calcul corect! 🌟',bad:'Nu! y are valoarea implicită 2, deci f(4) = 4×2 = 8.'},
+  12:{ok:'Perfect! Parametru = în definiție; Argument = valoarea la apel! 🧚',bad:'Nu! Parametru e în definiția funcției; argumentul e valoarea concretă dată la apel.'}
+};
+function qans(q,ans,btn){
+  if(qzD[q])return;const ok=ans===QC[q];
+  const fb=document.getElementById('qfb'+q);
+  btn.closest('.qcard').querySelectorAll('.qopt').forEach(b=>b.disabled=true);
+  btn.classList.add(ok?'correct':'wrong');
+  fb.className='fb show '+(ok?'ok':'err');
+  fb.innerHTML=(ok?'✅ ':'❌ ')+(ok?QM[q].ok:QM[q].bad);
+  if(ok&&!qzD[q]){qzD[q]=true;qzC++;upS();addXP(1,fb);}
+  if(qzC===6)showMagic('🌸','Jumătate din Quiz Completat!');
+}
+
+// ── MATCH ──
+const MP={
+  'global_var':'Trăiește în tot programul, accesibilă oriunde',
+  'local_var':'Trăiește doar în funcție și dispare după',
+  'global_kw':'Permite modificarea variabilei globale din funcție',
+  'param':'Variabila din definiția funcției',
+  'argument':'Valoarea concretă dată la apelul funcției',
+  'default':'Valoare folosită dacă nu se dă un argument',
+  'args':'Acceptă oricâte argumente într-un tuplu',
+  'return':'Trimite un rezultat înapoi din funcție',
+  'nameerror':'Eroare când accesezi variabila locală din afară'
+};
+let mSel=null,mDone={},mXP=false;
+function matchLeft(ix,key){if(mDone[key])return;mSel={side:'left',key};document.querySelectorAll('[id^="mc"]').forEach(e=>e.classList.remove('sel'));document.getElementById('mc'+ix).classList.add('sel');}
+function matchRight(key){
+  if(!mSel||mSel.side!=='left')return;
+  const lk=mSel.key;mSel=null;document.querySelectorAll('[id^="mc"]').forEach(e=>e.classList.remove('sel'));
+  if(lk===key){
+    mDone[key]=true;
+    document.querySelectorAll('.mi').forEach(el=>{if(el.textContent.trim()===lk||el.textContent.trim()===MP[lk])el.classList.add('mat');});
+    const tot=Object.keys(mDone).length;
+    document.getElementById('matchResult').textContent='✅ '+tot+'/9 perechi! '+(tot>=9?'Toate perfecte! +1 XP! 🧚':'Continuă!');
+    if(tot>=9&&!mXP){mXP=true;bonC++;upS();addXP(1,document.getElementById('matchResult'));showMagic('💎','Toate Florile Potrivite!');}
+  } else {
+    document.querySelectorAll('.mi').forEach(el=>{if(el.textContent.trim()===lk||el.textContent.trim()===MP[lk]){el.classList.add('bad');setTimeout(()=>el.classList.remove('bad'),500);}});
+    document.getElementById('matchResult').textContent='❌ Nu e perechea potrivită. Mai încearcă, micuță vrăjitoare! 🌿';
+  }
+}
+
+// ── ORDER ──
+const CO=[
+  'magie_totala = 0          # variabilă globală',
+  'def lanseaza(zana, putere=10, *cristale):',
+  '    global magie_totala',
+  '    magie_totala += putere',
+  '    print(f"Zâna {zana} a folosit puterea {putere}")',
+  '    for c in cristale:',
+  '        print("Cristal folosit:", c)',
+  'lanseaza("Aria", 50, "safir", "rubin")',
+  'print("Magie totală:", magie_totala)'
+];
+let oItems=[...CO],oDone=false,dSrc=null;
+function buildOL(){oItems=[...CO].sort(()=>Math.random()-.5);renderOL();}
+function renderOL(){
+  const l=document.getElementById('orderList');l.innerHTML='';
+  oItems.forEach((line,ix)=>{
+    const it=document.createElement('div');it.className='oi';it.draggable=true;
+    it.innerHTML='<span class="dh">⠿</span><span style="font-family:Courier New,monospace;font-size:.82rem;">'+esc(line)+'</span>';
+    it.addEventListener('dragstart',()=>{dSrc=ix;it.classList.add('dragging');});
+    it.addEventListener('dragend',()=>{it.classList.remove('dragging');document.querySelectorAll('.oi').forEach(i=>i.classList.remove('over'));});
+    it.addEventListener('dragover',e=>{e.preventDefault();it.classList.add('over');});
+    it.addEventListener('dragleave',()=>it.classList.remove('over'));
+    it.addEventListener('drop',e=>{e.preventDefault();it.classList.remove('over');if(dSrc===null||dSrc===ix)return;const a=[...oItems];const[m]=a.splice(dSrc,1);a.splice(ix,0,m);oItems=a;renderOL();});
+    l.appendChild(it);
+  });
+}
+function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function checkOrder(){
+  const ok=oItems.every((v,i)=>v===CO[i]);
+  const fb=document.getElementById('orderFb');
+  if(ok&&!oDone){
+    oDone=true;fb.className='fb show ok';
+    fb.innerHTML='✅ Perfect! Codul este în ordinea corectă! +1 XP bonus! 🧚✨';
+    bonC++;upS();addXP(1,fb);
+    document.getElementById('orderList').querySelectorAll('.oi').forEach(i=>{i.style.borderColor='var(--moss)';i.style.background='var(--leaf-dim)';});
+    showMagic('🌲','Codul Ordonat! Pădure Stăpânită!');
+  } else if(!ok){
+    fb.className='fb show err';
+    fb.innerHTML='❌ Ordinea nu e corectă. Gândește-te: mai întâi globalul, apoi funcția cu global, *args, corpul, apelul! 🌿';
+  }
+}
+function shuffleOrder(){oItems=[...oItems].sort(()=>Math.random()-.5);renderOL();document.getElementById('orderFb').className='fb';}
+buildOL();upS();
+
+// ── SCROLL REVEAL ──
+const obs=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';}});},{threshold:.06});
+document.querySelectorAll('.scard,.chap,.qcard').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(22px)';el.style.transition='opacity .45s ease,transform .45s ease';obs.observe(el);});
+</script>
+</body>
+</html>
